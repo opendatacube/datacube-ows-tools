@@ -10,49 +10,50 @@
 
 
       <!-- meta data for the group -->
-</div>
+    </div>
 
-      <div class="form-group" style="display: none">
-        <label for="catalog-type">Catalog item Type</label>
-        <input type="text" class="form-control" name="name" id="catalog-type" placeholder="name for catalog group"
-          value="Group" />
+    <div class="form-group" style="display: none">
+      <label for="catalog-type">Catalog item Type</label>
+      <input type="text" class="form-control" name="name" id="catalog-type" placeholder="name for catalog group"
+        value="Group" />
 
+    </div>
+  </div>
+  <button class="btn btn-primary" id="addItems">Add selected items</button>
+  <div class="row" style="display: none;" id="requestedcatalog">
+    <div class="form-group col-md-6 col-xs-6">
+      <label for="catalog-name">Catalog urls</label>
+      <div id="urllist">
       </div>
     </div>
-    <button class="btn btn-primary" id="addItems">Add selected items</button>
-    <div class="row" style="display: none;" id="requestedcatalog">
-      <div class="form-group col-md-6 col-xs-6">
-        <label for="catalog-name">Catalog urls</label>
-        <div id="urllist">
-        </div>
-      </div>
-      <div class="form-group col-md-6 col-xs-6">
-        <label for="catalog-name">Catalog item name</label>
-        <div id="namelist">
-        </div>
+    <div class="form-group col-md-6 col-xs-6">
+      <label for="catalog-name">Catalog item name</label>
+      <div id="namelist">
       </div>
     </div>
-    <div class="row">
-	    <div class="col-md-12" style="display: none" id="pull-data">
-                  <button class="btn btn-primary" id="getCatalog">Pull Data</button>
-		  <div class="progress">
-  <div id="progressbar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
-</div>
-	    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12" style="display: none" id="pull-data">
+      <button class="btn btn-primary" id="getCatalog">Pull Data</button>
+      <div class="progress">
+        <div id="progressbar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+          aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+      </div>
+    </div>
 
   </div>
-	    <div class="row" id="downloadCatalog" style="display: none;"> 
-		    <div class="col-md-12">
-		    <form method="post" action="/dea-web-tools{{ url_for('download_catalog') }}">
-			 <input type="text" id="filename" name="filename" style="display:none;"></input>
-			 <div class="form-group">
-                            <label for="catalogname">Catalog item Type</label>
-			    <input type="text" class="form-control" id="catalogname" name="catalogname" value="terria.json"></input>
-			 </div>
-			 <input type="submit" class="btn btn-primary" value="Download catalog">
-	         </form>
-		    </div>
-	    </div>
+  <div class="row" id="downloadCatalog" style="display: none;">
+    <div class="col-md-12">
+      <form method="post" action="{{ url_for('download_catalog') }}">
+        <input type="text" id="filename" name="filename" style="display:none;"></input>
+        <div class="form-group">
+          <label for="catalogname">Catalog item Type</label>
+          <input type="text" class="form-control" id="catalogname" name="catalogname" value="terria.json"></input>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Download catalog">
+      </form>
+    </div>
+  </div>
   <pre id="obj" style="display: none">
       </pre>
 </div>
@@ -66,15 +67,15 @@
         $('#namelist').append('<input type="text" class="form-control catalog-name" value="' + $(this).val() + '"/>');
       });
       $('#pull-data').show();
-	    $('#requestedcatalog').show();
+      $('#requestedcatalog').show();
     });
 
 
 
 
     $('#getCatalog').click(function (e) {
-	    $(this).text('Pulling ... ');
-		var itemcount = $('.url-name').length;
+      $(this).text('Pulling ... ');
+      var itemcount = $('.url-name').length;
       var new_catalog = [];
       // load reference json
       $.ajax({
@@ -82,12 +83,12 @@
         data: {
           format: "json"
         },
-        async: true, 
+        async: true,
         crossDomain: true,
         success: function (data) {
 
-            {% block template %}
-            {% endblock %}
+          {% block template %}
+          {% endblock %}
           for (var index = 0; index < itemcount; index++) { //start of for
             var baseurl = $('.url-name').get(index).value;
             var url = baseurl + '?service=WMS&request=GetCapabilities&version=1.3.0&tiled=true';
@@ -151,19 +152,18 @@
                 if (index == itemcount - 1) {
                   //$('#obj').text(JSON.stringify(template, null, 2));
                   $.ajax({
-                    url: "/dea-web-tools{{ url_for('json_generator') }}",
+                    url: "{{ url_for('json_generator') }}",
                     type: 'POST',
                     data: JSON.stringify(template),
                     contentType: "application/json; charset=UTF-8",
                     dataType: "json",
                     success: function (data) {
-                      console.log(data['filename']);
-			    $('#filename').val(data['filename']);
-		            $('#progressbar').attr('aria-valuenow', 100);
-	                    $('#getCatalog').hide();
+                      $('#filename').val(data['filename']);
+                      $('#progressbar').attr('aria-valuenow', 100);
+                      $('#getCatalog').hide();
 
-		            $('#progressbar').css('width','100%');
-	                    $('#downloadCatalog').show();
+                      $('#progressbar').css('width', '100%');
+                      $('#downloadCatalog').show();
                     }
 
                   });
