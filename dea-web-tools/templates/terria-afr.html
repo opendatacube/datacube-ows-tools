@@ -1,0 +1,23 @@
+{% extends "terria-base.html" %}
+{% block webserverlisting %}
+<select class="form-control" multiple id="url" style="height:180px;">
+  <option value="Digital Earth Africa">https://ows.digitalearth.africa/</option>
+</select>
+{% endblock %}
+
+{% block template %}
+var template = {
+  "corsDomains": [
+    "dea.ga.gov.au",
+    "digitalearth.africa",
+    "dea-public-data-dev.s3-ap-southeast-2.amazonaws.com"
+  ],
+  "homeCamera": {
+    "north": -38,
+    "east": 45,
+    "south": -35,
+    "west": 20
+  },
+  "catalog": []
+};
+  {% endblock %}

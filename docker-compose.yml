@@ -1,0 +1,35 @@
+version: '3'
+services:
+      
+  dea-web-tools:
+    build: .
+    volumes:
+      - .:/opt/odc/dea-web-tools
+      - static_volume:/opt/odc/dea-web-tools/dea-web-tools/static  # <-- bind the static volume
+      - media_volume:/opt/odc/dea-web-tools/dea-web-tools/media  # <-- bind the media volume
+    env_file:
+      - .env
+    networks:
+      - nginx_network
+
+  nginx: 
+    image: nginx:latest
+    ports:
+      - 6000:80
+    volumes:
+      - ./config/nginx/conf.d:/etc/nginx/conf.d
+      - static_volume:/opt/odc/dea-web-tools/dea-web-tools/static  # <-- bind the static volume
+      - media_volume:/opt/odc/dea-web-tools/dea-web-tools/media  # <-- bind the media volume
+    depends_on:
+      - dea-web-tools 
+    networks:  # <-- here
+      - nginx_network
+
+networks:  # <-- and here
+  nginx_network:
+    driver: bridge
+
+volumes:
+  database1_volume:
+  static_volume:  # <-- declare the static volume
+  media_volume:  # <-- declare the media volume

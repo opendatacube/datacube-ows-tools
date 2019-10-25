@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>DEA Web Tools</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{{ url_for('static', filename='css/simple-sidebar.css') }}" rel="stylesheet">
+
+  <!-- Custom styles -->
+  <link href="{{ url_for('static', filename='css/custom.css') }}" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <div class="d-flex" id="wrapper">
+
+    <!-- Sidebar -->
+    <div class="bg-light border-right" id="sidebar-wrapper">
+      <div class="sidebar-heading">DEA Web Tools</div>
+      <div class="list-group list-group-flush list-group-root well">
+        <a href="#" class="list-group-item list-group-item-action bg-light">Terria Catalog Generator</a>
+	<div class="list-group">
+            <div class="list-group-item">
+                <a href="#" class="list-group-item">Australia</a>
+                <a href="#" class="list-group-item">Africa</a>
+            </div>
+	</div>
+    
+        <!-- <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
+        <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
+        <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
+        <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
+        <a href="#" class="list-group-item list-group-item-action bg-light">Status</a> -->
+      </div>
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+        <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Dropdown
+              </a>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Something else here</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="container-fluid">
+        <h1 class="mt-4">Terria Catalog Generator</h1>
+        <div class="">
+            <div class="form-group">
+              <label for="url">Select urls to create catalog (Multi select enabled)</label>
+              <select class="form-control" multiple id="url" style="height:180px;">
+                <option value="DEA Prod">https://ows.dea.ga.gov.au/</option>
+                <option value="DEA Development">https://ows.dev.dea.ga.gov.au/</option>
+                <option value="Cambodia Development">https://cambodiacube.dev.dea.ga.gov.au/</option>
+                <option value="Cambodia Production">https://cambodiacube.dea.ga.gov.au/</option>
+                <option value="ODC Hackathon">https://ows.sandbox.test.frontiersi.io/</option>
+                <option value="Digital Earth Africa">https://ows.digitalearth.africa/</option>
+                <option disabled>Below are currently unsupported</option>
+                <option value="GSKY Web Map Service" disabled>https://gsky.nci.org.au/ows/dea</option>
+              </select>
+        
+              <!-- meta data for the group -->
+        
+              <div class="form-group">
+                <label for="catalog-type">Catalog item Type</label>
+                <input type="text" class="form-control" name="name" id="catalog-type" placeholder="name for catalog group"
+                  value="Group" />
+        
+              </div>
+            </div>
+            <button class="btn btn-primary" id="addItems">Add selected items</button>
+            <div class="row">
+              <div class="form-group col-md-6 col-xs-6">
+                <label for="catalog-name">Catalog urls</label>
+                <div id="urllist">
+                </div>
+              </div>
+              <div class="form-group col-md-6 col-xs-6">
+                <label for="catalog-name">Catalog item name</label>
+                <div id="namelist">
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-primary" id="getCatalog">Pull Data</button>
+          </div>
+          <pre id="obj">
+            </pre>
+      </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/wms.js') }}"></script>
+
+  <!-- Menu Toggle Script -->
+  <script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+
+    $(document).ready(function () {
+      $('#addItems').click(function (e) {
+        $('select#url').children('option:selected').each(function (index) {
+          $('#urllist').append('<input type="text" class="form-control url-name" value="' + $(this).text() + '"/>');
+          $('#namelist').append('<input type="text" class="form-control catalog-name" value="' + $(this).val() + '"/>');
+        });
+      });
+
+
+
+      $('#getCatalog').click(function (e) {
+          var new_catalog = [];
+          // load reference json
+          $.ajax({
+		  url: "{{ url_for('static', filename='js/featurereference.json') }}",
+            data: {
+              format: "json"
+            },
+            async: false,
+            crossDomain: true,
+            success: function (data) {
+              var template = {
+                "corsDomains": [
+                  "dea.ga.gov.au",
+                  "gsky-dev.nci.org.au",
+                  "gsky-test.nci.org.au",
+                  "gsky.nci.org.au",
+                  "dea-public-data-dev.s3-ap-southeast-2.amazonaws.com"
+                ],
+                "homeCamera": {
+                  "north": -8,
+                  "east": 158,
+                  "south": -45,
+                  "west": 109
+                },
+                "catalog": []
+              };
+  
+        for (var index = 0; index < $('.url-name').length; index++) { //start of for
+          var baseurl = $('.url-name').get(index).value;
+          console.log($('.catalog-name').get(index).value);
+          var url = baseurl + '?service=WMS&request=GetCapabilities&version=1.3.0&tiled=true';
+          var obj = {
+            "name": $('.catalog-name').get(index).value,
+            "type": 'group',
+            "preserveOrder": true,
+            "items": [
+
+            ]
+          };
+              console.log(url);
+
+              $.ajax({
+                url: url,
+                type:  'GET',
+                async: false,
+                success: function (xml) {
+                  var $xml = $(xml);
+                  // split the parser to two types - with subfolders and without subfolders
+
+                  // below is with subfolders
+                  if ($('select#url').children('option:selected').val() != 'GSKY-Web-Map-Service') {
+                    $xml.find('Layer').find('Layer[queryable!="1"]').each(function () {
+                      var folder_title = $(this).find('Title').first().text();
+                      var new_folder = {};
+                      new_folder['name'] = folder_title;
+                      new_folder['type'] = 'group';
+                      new_folder['preserveOrder'] = true;
+                      new_folder['items'] = [];
+                      new_catalog.push(new_folder);
+                      $(this).find('Layer[queryable="1"]').each(function () {
+                        var name = $(this).find('Name').first().text();
+                        var title = $(this).find('Title').first().text();
+                        var new_item = {};
+                        new_item['name'] = title;
+                        new_item['type'] = 'wms';
+                        new_item['layers'] = name;
+                        new_item['url'] = baseurl;
+                        new_item['linkedWcsUrl'] = baseurl;
+                        new_item['linkedWcsCoverage'] = name;
+                        new_item["ignoreUnknownTileErrors"] = true;
+                        new_item["chartType"] = "momentPoints";
+                        new_item["chartColor"] = "white";
+                        new_item["opacity"] = 1;
+                        if (data[name]) {
+                          $.each(data[name], function (k, v) {
+                            new_item[k] = v;
+                          });
+
+                        }
+                        new_folder['items'].push(new_item);
+
+                      });
+                      obj['items'].push(new_folder);
+                    });
+                    // end of the subfolder section
+
+                  }
+                  template['catalog'].push(obj);
+                  if (index == $('.url-name').length-1) {
+                      $('#obj').text(JSON.stringify(template, null, 2));
+	              $.ajax({
+			   url: "/dea-web-tools{{ url_for('json_generator') }}",
+			      type: 'POST',
+			      data: JSON.stringify(template),
+			      contentType: "application/json; charset=UTF-8",
+			      dataType: "json",
+			      success: function(data){
+				      console.log(data);
+			      }
+
+		      });
+
+                    }
+                }
+              });
+              // end of get
+
+        }//end of for
+            },
+            error: function (e) {
+              console.log(' error data' + e.responseText);
+              $.each(JSON.stringify(e.responseText), function (key, value) {
+                console.log(key);
+              });
+            },
+            done: function (output) {
+              console.log('output is' + output);
+            }
+
+
+          });
+
+      });
+
+    });
+  </script>
+
+</body>
+
+</html>
