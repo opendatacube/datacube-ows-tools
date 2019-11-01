@@ -1,0 +1,17 @@
+image: geoscienceaustralia/dea-web-tools
+options:
+   docker: true
+
+pipelines:
+   branches:
+      master:
+         - step:
+            script:
+               - apt-get update && apt-get install -y unzip git
+               - export IMAGE=geoscienceaustralia/dea-web-tools:latest
+               - export IMAGE_TAG=geoscienceaustralia/dea-web-tools:$(git describe --tags | awk -F'[-.]' '{if ($4!="" && $5!="") print $1"."$2"."$3+1"-unstable."$4"."$5; else print $1"."$2"."$3;}')
+               - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD 
+               - docker build --pull -t $IMAGE .
+               - docker tag $IMAGE $IMAGE_TAG
+               - docker push $IMAGE
+               - docker push $IMAGE_TAG
