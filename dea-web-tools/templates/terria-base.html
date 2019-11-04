@@ -44,7 +44,7 @@
   </div>
   <div class="row" id="downloadCatalog" style="display: none;">
     <div class="col-md-12">
-      <form method="post" action="/dea-web-tools{{ url_for('download_catalog') }}">
+      <form method="post" action="{{ url_for('download_catalog') }}">
         <input type="text" id="filename" name="filename" style="display:none;"></input>
         <div class="form-group">
           <label for="catalogname">Enter file name</label>
@@ -201,7 +201,7 @@
 
         $('#obj').text(JSON.stringify(template, null, 2));
         $.ajax({
-          url: "/dea-web-tools{{ url_for('json_generator') }}",
+          url: "{{ url_for('json_generator') }}",
           type: 'POST',
           data: JSON.stringify(template),
           contentType: "application/json; charset=UTF-8",
