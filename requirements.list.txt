@@ -1,3 +1,4 @@
 flask
+flask-s3
 requests
 gunicorn

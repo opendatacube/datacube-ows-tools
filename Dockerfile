@@ -20,7 +20,7 @@ RUN pip3 install --upgrade pip \
 
 RUN pip3 install -U pip && rm -rf $HOME/.cache/pip
 
-RUN pip3 install flask requests gunicorn gevent && rm -rf $HOME/.cache/pip
+RUN pip3 install flask flask-s3 equests gunicorn gevent && rm -rf $HOME/.cache/pip
 
 WORKDIR /opt/odc/dea-web-tools
 ADD . .
