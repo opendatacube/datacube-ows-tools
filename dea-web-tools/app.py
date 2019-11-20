@@ -3,7 +3,7 @@ import uuid
 import json
 from flask import Flask, request, send_file, Response, send_from_directory
 from flask import render_template
-from flask_s3 import 
+from flask_s3 import FlaskS3 
 
 app = Flask(__name__, static_url_path=os.getenv('STATIC_PATH', None))
 app.config['FLASKS3_BUCKET_NAME'] = 'dea-web-webtools-static'
