@@ -6,7 +6,7 @@
     <div class="col-md-12">
         <input type="url" class="form-control" id="wps-url" 
         placeholder="Enter wps url"
-        value="https://ows.dev.dea.ga.gov.au/wps">
+        value="https://ows.dev.dea.ga.gov.au/wps/">
       </div>
     <div class="col-md-12" id="pull-data">
       <button class="btn btn-primary" id="getCatalog">Create Catalog</button>
@@ -63,13 +63,13 @@
             console.log(url);
             var $xml = $(xml);
             $('#getCatalog').text('Pulling ' + baseurl);
-                    $xml.find('wps:ProcessOfferings').find('wps:Process').each(function () {
-                    new_item['name'] = $(this).find('ows:Title').first().text();
-                    new_item['type'] = 'wps';
-                    new_item['url'] = baseurl;
-                    new_item['identifier'] = $(this).find('ows:Identifier').first().text();;
-                    new_item['description'] = $(this).find('ows:Abstract').first().text();;
-                    template['catalog'].push(new_item);
+            $xml.find('[nodename="wps:ProcessOfferings"]').find('[nodename="wps:Process"]').each(function () {
+                new_item['name'] = $(this).find('[nodename="ows:Title"]').first().text();
+                new_item['type'] = 'wps';
+                new_item['url'] = baseurl;
+                new_item['identifier'] = $(this).find('[nodename="ows:Identifier"]').first().text();;
+                new_item['description'] = $(this).find('[nodename="ows:Abstract"]').first().text();;
+                template['catalog'].push(new_item);
             });
           }
       });
