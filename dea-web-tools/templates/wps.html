@@ -64,12 +64,14 @@
             var $xml = $(xml);
             $('#getCatalog').text('Pulling ' + baseurl);
             $xml.find('wps\\:ProcessOfferings, ProcessOfferings').find('wps\\:Process, Process').each(function () {
+                let new_item = {};
                 new_item['name'] = $(this).find('ows\\:Title, Title"]').first().text();
                 new_item['type'] = 'wps';
                 new_item['url'] = baseurl;
                 new_item['identifier'] = $(this).find('ows\\:Identifier, Identifier').first().text();;
                 new_item['description'] = $(this).find('ows\\:Abstract, Abstract').first().text();;
                 template['catalog'].push(new_item);
+                console.log(new_item);
             });
           }
       });
