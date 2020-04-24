@@ -72,11 +72,11 @@
                 new_item['description'] = $(this).find('ows\\:Abstract, Abstract').first().text();
                 template['catalog'].push(new_item);
                 console.log(new_item);
-                console.log(template);
             });
-          }
+            console.log(template);
+            completion_checker();
+        }
       });
-      completion_checker();
     }); // end of ajax success
 
   function completion_checker(){
