@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block page %}
+<div class="container-fluid">
+  <h1 class="mt-4">WPS Test Catalog Generator</h1>
+  <div class="row">
+    <div class="col-md-12">
+        <input type="url" class="form-control" id="wps-url" 
+        placeholder="Enter wps url"
+        value="https://ows.dev.dea.ga.gov.au/wps">
+      </div>
+    <div class="col-md-12" id="pull-data">
+      <button class="btn btn-primary" id="getCatalog">Create Catalog</button>
+    </div>
+
+  </div>
+  <div class="row" id="downloadCatalog" style="display: none;">
+    <div class="col-md-12">
+      <form method="post" action="{{ url_for('download_catalog') }}">
+        <input type="text" id="filename" name="filename" style="display:none;"></input>
+        <div class="form-group">
+          <label for="catalogname">Enter file name</label>
+          <input type="text" class="form-control" id="catalogname" name="catalogname" value="wpstesting.json"></input>
+        </div>
+        <input type="submit" class="btn btn-primary" value="Download catalog">
+      </form>
+    </div>
+  </div>
+  <pre id="obj">
+      </pre>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+  $(document).ready(function () {
+    var new_catalog = [];
+    var data;
+    var template = {
+        "corsDomains": [
+            "dea.ga.gov.au",
+            "gsky-dev.nci.org.au",
+            "gsky-test.nci.org.au",
+            "gsky.nci.org.au",
+            "dea-public-data-dev.s3-ap-southeast-2.amazonaws.com"
+        ],
+        "homeCamera": {
+            "north": -8,
+            "east": 158,
+            "south": -45,
+            "west": 109
+        },
+        "catalog": []
+    };
+
+    $('#getCatalog').click(function (e) {
+
+      var baseurl = $('#wps-url').val();
+      var url = baseurl + '?service=WPS&request=getcapabilities&version=1-.0.0';
+      $.ajax({
+          url: url,
+          type: 'GET',
+          async: true,
+          success: function (xml) {
+            console.log(url);
+            var $xml = $(xml);
+            $('#getCatalog').text('Pulling ' + baseurl);
+                    $xml.find('wps:ProcessOfferings').find('wps:Process').each(function () {
+                    new_item['name'] = $(this).find('ows:Title').first().text();
+                    new_item['type'] = 'wps';
+                    new_item['url'] = baseurl;
+                    new_item['identifier'] = $(this).find('ows:Identifier').first().text();;
+                    new_item['description'] = $(this).find('ows:Abstract').first().text();;
+                    template['catalog'].push(new_item);
+            });
+          }
+      });
+      completion_checker();
+    }); // end of ajax success
+
+  function completion_checker(){
+        $('#obj').text(JSON.stringify(template, null, 2));
+        $.ajax({
+          url: "{{ url_for('json_generator') }}",
+          type: 'POST',
+          data: JSON.stringify(template),
+          contentType: "application/json; charset=UTF-8",
+          dataType: "json",
+          success: function (data) {
+            $('#filename').val(data['filename']);
+            $('#getCatalog').hide();
+            $('#downloadCatalog').show();
+          }
+        });
+      }
+  });
+</script>
+{% endblock %}
