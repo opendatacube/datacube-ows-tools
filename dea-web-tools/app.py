@@ -18,6 +18,9 @@ def terria_au():
 def terria_afr():
     return render_template('terria-afr.html')
 
+@app.route('/wps')
+def terria_afr():
+    return render_template('wps.html')
 
 @app.route('/jsongenerator', methods=['POST'])
 def json_generator():
