@@ -68,10 +68,11 @@
                 new_item['name'] = $(this).find('ows\\:Title, Title').first().text();
                 new_item['type'] = 'wps';
                 new_item['url'] = baseurl;
-                new_item['identifier'] = $(this).find('ows\\:Identifier, Identifier').first().text();;
-                new_item['description'] = $(this).find('ows\\:Abstract, Abstract').first().text();;
+                new_item['identifier'] = $(this).find('ows\\:Identifier, Identifier').first().text();
+                new_item['description'] = $(this).find('ows\\:Abstract, Abstract').first().text();
                 template['catalog'].push(new_item);
                 console.log(new_item);
+                console.log(template);
             });
           }
       });
