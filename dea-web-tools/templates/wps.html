@@ -65,7 +65,7 @@
             $('#getCatalog').text('Pulling ' + baseurl);
             $xml.find('wps\\:ProcessOfferings, ProcessOfferings').find('wps\\:Process, Process').each(function () {
                 let new_item = {};
-                new_item['name'] = $(this).find('ows\\:Title, Title"]').first().text();
+                new_item['name'] = $(this).find('ows\\:Title, Title]').first().text();
                 new_item['type'] = 'wps';
                 new_item['url'] = baseurl;
                 new_item['identifier'] = $(this).find('ows\\:Identifier, Identifier').first().text();;
