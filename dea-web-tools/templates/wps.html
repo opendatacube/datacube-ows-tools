@@ -63,12 +63,12 @@
             console.log(url);
             var $xml = $(xml);
             $('#getCatalog').text('Pulling ' + baseurl);
-            $xml.find('[nodename="wps:ProcessOfferings"]').find('[nodename="wps:Process"]').each(function () {
-                new_item['name'] = $(this).find('[nodename="ows:Title"]').first().text();
+            $xml.find('wps\\:ProcessOfferings, ProcessOfferings').find('wps\\:Process, Process').each(function () {
+                new_item['name'] = $(this).find('ows\\:Title, Title"]').first().text();
                 new_item['type'] = 'wps';
                 new_item['url'] = baseurl;
-                new_item['identifier'] = $(this).find('[nodename="ows:Identifier"]').first().text();;
-                new_item['description'] = $(this).find('[nodename="ows:Abstract"]').first().text();;
+                new_item['identifier'] = $(this).find('ows\\:Identifier, Identifier').first().text();;
+                new_item['description'] = $(this).find('ows\\:Abstract, Abstract').first().text();;
                 template['catalog'].push(new_item);
             });
           }
