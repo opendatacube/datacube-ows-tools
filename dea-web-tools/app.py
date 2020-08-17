@@ -1,14 +1,15 @@
-import os 
+import os
 import uuid
 import json
 from flask import Flask, request, send_file, Response, send_from_directory
 from flask import render_template
-from flask_s3 import FlaskS3 
+from flask_s3 import FlaskS3
 
 app = Flask(__name__, static_url_path=os.getenv('STATIC_PATH', None))
 app.config['FLASKS3_BUCKET_NAME'] = 'dea-web-webtools-static'
 s3 = FlaskS3(app)
 
+# for terria catalog generator
 @app.route('/')
 def terria_au():
     return render_template('terria-au.html')
@@ -18,10 +19,18 @@ def terria_au():
 def terria_afr():
     return render_template('terria-afr.html')
 
+# for terria WPS catalog generator
 @app.route('/wps')
 def terria_wps():
     return render_template('wps.html')
 
+
+# for terria WPS catalog generator
+@app.route('/legend_comp')
+def terria_wps():
+    return render_template('legend-comparison.html')
+
+# Utility functions
 @app.route('/jsongenerator', methods=['POST'])
 def json_generator():
     data = request.get_json()
