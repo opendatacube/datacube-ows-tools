@@ -27,7 +27,7 @@ def terria_wps():
 
 # for terria WPS catalog generator
 @app.route('/legend_comp')
-def terria_wps():
+def comp_legend():
     return render_template('legend-comparison.html')
 
 # Utility functions
