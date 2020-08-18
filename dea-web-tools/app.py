@@ -25,10 +25,19 @@ def terria_wps():
     return render_template('wps.html')
 
 
-# for terria WPS catalog generator
+# for Testing
 @app.route('/legend_comp')
 def comp_legend():
     return render_template('legend-comparison.html')
+
+@app.route('/getmap_comp')
+def comp_getmap():
+    return render_template('legend-comparison.html')
+
+@app.route('/getfeatureinfo_comp')
+def comp_getfeatureinfo():
+    return render_template('legend-comparison.html')
+
 
 # Utility functions
 @app.route('/jsongenerator', methods=['POST'])
