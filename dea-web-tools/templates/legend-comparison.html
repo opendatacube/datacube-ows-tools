@@ -18,17 +18,8 @@
       </div>
 
     </div>
-    <div class="row">
-      <div class="col-md-2"></div>
-
-      <div class="col-md-4" id="stable-ows-legend-list">
-
+    <div class="col-md-8 offset-2" id="legend-compare-row">
       </div>
-      <div class="col-md-4" id="comparison-ows-legend-list">
-
-      </div>
-      <div class="col-md-2"></div>
-    </div>
   </div>
 {% endblock %}
 {% block script %}
@@ -36,7 +27,7 @@
   $(document).ready(function () {
     var new_catalog = [];
     $('#compareLegends').click(function (e) {
-
+      $('#legend-compare-row').empty()
       var stableowsurl = $('#stable-ows-url').val();
       var comparableowsurl = $('#comparable-ows-url').val();
       var stablegetcapurl = stableowsurl + '?service=WMS&request=GetCapabilities&version=1.3.0&tiled=true';
@@ -50,37 +41,18 @@
             var $xml = $(xml);
             $('#compareLegends').text('Pulling ' + stableowsurl);
             $xml.find('Layer').find('Layer[queryable!="1"]').each(function () {
-                $("#stable-ows-legend-list").append("<h4>"+$(this).find('Name').first().text()+"</h4>");
+                $("#legend-compare-row").append("<h4>"+$(this).find('Name').first().text()+"</h4>");
                 $(this).find('Style').each(function(){
                     if($(this).find('LegendURL').first().text()){
                       var legendImageSrc = $(this).find('LegendURL').find("OnlineResource").attr("xlink:href");
-                      $("#stable-ows-legend-list").append("<img height='150px' src=" + encodeURI(legendImageSrc) + ">");
+                      var comparablelegendImageSrc = legendImageSrc.replace(stableowsurl, comparableowsurl);
+                      $('#legend-compare-row').append('<div class="row"><img width="50%" src=' + encodeURI(legendImageSrc) + '><img width="50%" src=' + encodeURI(comparablelegendImageSrc) + '></div>');
                     }
 
                 });
             });
         }
       }); // end of first ajax
-      $.ajax({
-          url: comparablegetcapurl,
-          type: 'GET',
-          async: true,
-          success: function (xml) {
-
-            var $xml = $(xml);
-            $('#compareLegends').text('Pulling ' + comparableowsurl);
-            $xml.find('Layer').find('Layer[queryable!="1"]').each(function () {
-                $("#comparison-ows-legend-list").append("<h4>"+$(this).find('Name').first().text()+"</h4>");
-                $(this).find('Style').each(function(){
-                    if($(this).find('LegendURL').first().text()){
-                      var legendImageSrc = $(this).find('LegendURL').find("OnlineResource").attr("xlink:href");
-                      $("#comparison-ows-legend-list").append("<img height='150px' src=" + encodeURI(legendImageSrc) + ">");
-                    }
-
-                });
-            });
-        }
-      }); // end of second ajax
     });
   });
 </script>
