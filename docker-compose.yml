@@ -7,8 +7,6 @@ services:
       - .:/opt/odc/dea-web-tools
       - static_volume:/opt/odc/dea-web-tools/dea-web-tools/static  # <-- bind the static volume
       - media_volume:/opt/odc/dea-web-tools/dea-web-tools/media  # <-- bind the media volume
-    env_file:
-      - .env
     networks:
       - nginx_network
 
