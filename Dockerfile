@@ -20,12 +20,11 @@ RUN pip3 install --upgrade pip \
 
 RUN pip3 install -U pip && rm -rf $HOME/.cache/pip
 
-RUN pip3 install flask flask-s3 requests gunicorn gevent && rm -rf $HOME/.cache/pip
+RUN pip3 install flask flask-s3 requests gunicorn gevent owslib && rm -rf $HOME/.cache/pip
 
 WORKDIR /opt/odc/dea-web-tools
 ADD . .
 
-EXPOSE 6000
+EXPOSE 8000
 
-CMD ["gunicorn", "--bind", ":6000", "dea-web-tools.app:app"]
-
+CMD ["gunicorn", "--bind", ":8000", "--timeout", "121", "dea-web-tools.app:app"]
