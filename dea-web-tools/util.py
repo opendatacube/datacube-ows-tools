@@ -4,10 +4,10 @@ def enclosed_bbox(bbox):
     lat_range = lat_max - lat_min
 
     return (
-        lon_min + 0.48 * lon_range,
-        lat_min + 0.48 * lat_range,
-        lon_max - 0.48 * lon_range,
-        lat_max - 0.48 * lat_range
+        lon_min + 0.8 * lon_range,
+        lat_min + 0.8 * lat_range,
+        lon_max - 0.8 * lon_range,
+        lat_max - 0.8 * lat_range
     )
 
 def fixed_bbox(bbox):

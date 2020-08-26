@@ -1,4 +1,5 @@
 import os
+import sys
 import uuid
 import json
 from flask import Flask, request, send_file, Response, send_from_directory
@@ -56,16 +57,17 @@ def getmap_url_generator():
         test_layer = wms.contents[test_layer_name]
         time = ''
         bbox = test_layer.boundingBoxWGS84
+        layers_url_list = []
+        fixed_espg = "EPSG%3A3857"
+        fixed_bbox = "15028131.257091936%2C-2504688.542848654%2C15654303.392804097%2C-1878516.4071364924"
         if test_layer.timepositions:
-            time=test_layer.timepositions[len(test_layer.timepositions) // 2].strip(),
+            time=test_layer.timepositions[len(test_layer.timepositions) // 2].strip()
+        for style in test_layer.styles:
+            print(time, file=sys.stdout)
 
-        url = stable_url + "wms?service=WMS&version=1.3.0&request=GetMap&layers={0}&styles=&width=250&height=250&crs={1}&bbox={2}&format=image%2Fpng&transparent=TRUE&bgcolor=0xFFFFFF&exceptions=XML{3}".format(
-            test_layer_name,  # layer name
-            "EPSG%3A3857",  # crs
-            "15028131.257091936%2C-2504688.542848654%2C15654303.392804097%2C-1878516.4071364924",  # bbox
-            time,  # &time=2016-01-01
-        )
-        getmap_urls.append({"url": url, "name": test_layer_name})
+            url = f"{stable_url}wms?service=WMS&version=1.3.0&request=GetMap&layers={test_layer_name}&styles={style}&width=250&height=250&crs={fixed_espg}&bbox={fixed_bbox}&format=image%2Fpng&transparent=TRUE&bgcolor=0xFFFFFF&exceptions=XML&time={time}"
+            layers_url_list.append({"style": style, "url": url})
+        getmap_urls.append({"name": test_layer_name, "layersList": layers_url_list})
 
     # return jsonify(getmap_urls)
     return json.dumps(getmap_urls)

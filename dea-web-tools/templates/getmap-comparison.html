@@ -39,11 +39,16 @@
           contentType: "application/json; charset=UTF-8",
           dataType: "json",
           success: function (data) {
-              $.each(data, function(i, url) {
-                console.log(url["url"]);
-                var comparablegetmapImageSrc = url["url"].replace(stableowsurl, comparableowsurl);
-                console.log(comparablegetmapImageSrc);
-                $('#getmap-compare-row').append('<h4>'+url["name"]+'</h4><div class="row"><img width="50%" height="250px" src=' + url["url"] + '><img width="50%" height="250px" src=' + comparablegetmapImageSrc + '></div>');
+              $.each(data, function(i, getmaps) {
+                console.log(getmaps["name"]);
+                $('#getmap-compare-row').append('<h2>'+getmaps["name"]+'</h2>');
+                console.log(getmaps["layersList"]);
+                $.each(getmaps["layersList"], function(j, urls){
+                  var stablegetmapImageSrc = urls["url"];
+                  var comparablegetmapImageSrc = stablegetmapImageSrc.replace(stableowsurl, comparableowsurl);
+                  console.log(comparablegetmapImageSrc);
+                  $('#getmap-compare-row').append('<h4>'+urls["style"]+'</h4><div class="row"><img width="50%" height="250px" src=' + stablegetmapImageSrc + '><img width="50%" height="250px" src=' + comparablegetmapImageSrc + '></div>');
+                });
               });
           }
         });
