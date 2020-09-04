@@ -1,6 +1,6 @@
 # datacube-ows-tools
-Includes a range of utility tools for generating configs, testing wms getcapabilities, compare legends and getmaps.
 
+Includes a range of utility tools for generating configs, testing wms getcapabilities, compare legends and getmaps.
 
 ## Usage
 

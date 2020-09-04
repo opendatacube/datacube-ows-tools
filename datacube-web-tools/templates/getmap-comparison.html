@@ -1,57 +1,75 @@
-{% extends "base.html" %}
-{% block page %}
+{% extends "base.html" %} {% block page %}
 <div class="container-fluid">
-    <h1 class="mt-4">GetMaps Comparison Tool</h1>
-    <div class="row">
-      <!-- <form name="wms-url"> -->
-      <div class="col-md-6">
-          <input type="url" class="form-control" id="stable-ows-url"
-          placeholder="Enter ows url" name="stable_ows_server"
-          value="https://ows.dev.dea.ga.gov.au/">
-        </div>
-        <div class="col-md-6">
-          <input type="url" class="form-control" id="comparable-ows-url"
-          placeholder="Enter comparison ows url" name="compareable_ows_server"
-          value="https://ows-ping.dev.dea.ga.gov.au/">
-        </div>
-      <div class="col-md-12" id="pull-data">
-        <button class="btn btn-primary" id="compareLegends">Compare</button>
-      </div>
+  <h1 class="mt-4">GetMaps Comparison Tool</h1>
+  <div class="row">
+    <!-- <form name="wms-url"> -->
+    <div class="col-md-6">
+      <input
+        type="url"
+        class="form-control"
+        id="stable-ows-url"
+        placeholder="Enter ows url"
+        name="stable_ows_server"
+        value="https://ows.dev.dea.ga.gov.au/"
+      />
+    </div>
+    <div class="col-md-6">
+      <input
+        type="url"
+        class="form-control"
+        id="comparable-ows-url"
+        placeholder="Enter comparison ows url"
+        name="compareable_ows_server"
+        value="https://ows-ping.dev.dea.ga.gov.au/"
+      />
+    </div>
+    <div class="col-md-12" id="pull-data">
+      <button class="btn btn-primary" id="compareLegends">Compare</button>
+    </div>
     <!-- </form> -->
-    </div>
+  </div>
   <!-- result -->
-    <div class="col-md-8 offset-2" id="getmap-compare-row">
-    </div>
+  <div class="col-md-8 offset-2" id="getmap-compare-row"></div>
 </div>
-{% endblock %}
-{% block script %}
+{% endblock %} {% block script %}
 <script>
   $(document).ready(function () {
     var new_catalog = [];
-    $('#compareLegends').click(function (e) {
-      $('#getmap-compare-row').empty()
-      var stableowsurl = $('#stable-ows-url').val();
-      var comparableowsurl = $('#comparable-ows-url').val();
+    $("#compareLegends").click(function (e) {
+      $("#getmap-compare-row").empty();
+      var stableowsurl = $("#stable-ows-url").val();
+      var comparableowsurl = $("#comparable-ows-url").val();
       $.ajax({
-          url: "{{ url_for('getmap_url_generator') }}",
-          type: 'POST',
-          data: JSON.stringify($("#stable-ows-url").val()),
-          contentType: "application/json; charset=UTF-8",
-          dataType: "json",
-          success: function (data) {
-              $.each(data, function(i, getmaps) {
-                console.log(getmaps["name"]);
-                $('#getmap-compare-row').append('<h2>'+getmaps["name"]+'</h2>');
-                console.log(getmaps["layersList"]);
-                $.each(getmaps["layersList"], function(j, urls){
-                  var stablegetmapImageSrc = urls["url"];
-                  var comparablegetmapImageSrc = stablegetmapImageSrc.replace(stableowsurl, comparableowsurl);
-                  console.log(comparablegetmapImageSrc);
-                  $('#getmap-compare-row').append('<h4>'+urls["style"]+'</h4><div class="row"><img width="50%" height="250px" src=' + stablegetmapImageSrc + '><img width="50%" height="250px" src=' + comparablegetmapImageSrc + '></div>');
-                });
-              });
-          }
-        });
+        url: "{{ url_for('getmap_url_generator') }}",
+        type: "POST",
+        data: JSON.stringify($("#stable-ows-url").val()),
+        contentType: "application/json; charset=UTF-8",
+        dataType: "json",
+        success: function (data) {
+          $.each(data, function (i, getmaps) {
+            console.log(getmaps["name"]);
+            $("#getmap-compare-row").append("<h2>" + getmaps["name"] + "</h2>");
+            console.log(getmaps["layersList"]);
+            $.each(getmaps["layersList"], function (j, urls) {
+              var stablegetmapImageSrc = urls["url"];
+              var comparablegetmapImageSrc = stablegetmapImageSrc.replace(
+                stableowsurl,
+                comparableowsurl
+              );
+              console.log(comparablegetmapImageSrc);
+              $("#getmap-compare-row").append(
+                "<h4>" +
+                  urls["style"] +
+                  '</h4><div class="row"><img width="50%" height="250px" src=' +
+                  stablegetmapImageSrc +
+                  '><img width="50%" height="250px" src=' +
+                  comparablegetmapImageSrc +
+                  "></div>"
+              );
+            });
+          });
+        },
+      });
     });
   });
 </script>

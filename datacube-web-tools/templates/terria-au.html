@@ -1,31 +1,14 @@
-{% extends "terria-base.html" %}
-{% block webserverlisting %}
-        <select class="form-control" multiple id="url" style="height:180px;">
-          <option value="DEA Prod">https://ows.dea.ga.gov.au/</option>
-          <option value="DEA Development">https://ows.dev.dea.ga.gov.au/</option>
-          <option value="ODC Hackathon">https://ows.sandbox.test.frontiersi.io/</option>
-          <option value="GSKY DEA Production">https://gsky.nci.org.au/ows/dea</option>
-          <option disabled>Below are currently unsupported</option>
-        </select>
-  
-        {% endblock %}
+{% extends "terria-base.html" %} {% block webserverlisting %}
+<select class="form-control" multiple id="url" style="height: 180px">
+  <option value="DEA Prod">https://ows.dea.ga.gov.au/</option>
+  <option value="DEA Development">https://ows.dev.dea.ga.gov.au/</option>
+  <option value="ODC Hackathon">https://ows.sandbox.test.frontiersi.io/</option>
+  <option value="GSKY DEA Production">https://gsky.nci.org.au/ows/dea</option>
+  <option disabled>Below are currently unsupported</option>
+</select>
 
-        {% block template %}
-          var template = {
-            "corsDomains": [
-              "dea.ga.gov.au",
-              "gsky-dev.nci.org.au",
-              "gsky-test.nci.org.au",
-              "gsky.nci.org.au",
-              "dea-public-data-dev.s3-ap-southeast-2.amazonaws.com"
-            ],
-            "homeCamera": {
-              "north": -8,
-              "east": 158,
-              "south": -45,
-              "west": 109
-            },
-            "catalog": []
-          };
-
-   {% endblock %}
+{% endblock %} {% block template %} var template = { "corsDomains": [
+"dea.ga.gov.au", "gsky-dev.nci.org.au", "gsky-test.nci.org.au",
+"gsky.nci.org.au", "dea-public-data-dev.s3-ap-southeast-2.amazonaws.com" ],
+"homeCamera": { "north": -8, "east": 158, "south": -45, "west": 109 },
+"catalog": [] }; {% endblock %}

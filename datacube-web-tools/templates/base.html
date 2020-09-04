@@ -1,86 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
 
-<head>
+    <title>DEA Web Tools</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+    <!-- Bootstrap core CSS -->
+    <link
+      href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}"
+      rel="stylesheet"
+    />
 
-  <title>DEA Web Tools</title>
+    <!-- Custom styles for this template -->
+    <link
+      href="{{ url_for('static', filename='css/simple-sidebar.css') }}"
+      rel="stylesheet"
+    />
 
-  <!-- Bootstrap core CSS -->
-  <link href="{{ url_for('static', filename='vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <!-- Custom styles -->
+    <link
+      href="{{ url_for('static', filename='css/custom.css') }}"
+      rel="stylesheet"
+    />
+  </head>
 
-  <!-- Custom styles for this template -->
-  <link href="{{ url_for('static', filename='css/simple-sidebar.css') }}" rel="stylesheet">
-
-  <!-- Custom styles -->
-  <link href="{{ url_for('static', filename='css/custom.css') }}" rel="stylesheet">
-
-</head>
-
-<body>
-
-  <div class="d-flex" id="wrapper">
-
-    <!-- Sidebar -->
-    <div class="bg-light border-right" id="sidebar-wrapper">
-      <div class="sidebar-heading">DEA Web Tools</div>
-      <div class="list-group list-group-flush list-group-root well">
-        <a href="#" class="list-group-item list-group-item-action bg-light">Terria Catalog Generator</a>
+  <body>
+    <div class="d-flex" id="wrapper">
+      <!-- Sidebar -->
+      <div class="bg-light border-right" id="sidebar-wrapper">
+        <div class="sidebar-heading">DEA Web Tools</div>
+        <div class="list-group list-group-flush list-group-root well">
+          <a href="#" class="list-group-item list-group-item-action bg-light"
+            >Terria Catalog Generator</a
+          >
           <div class="list-group">
             <div class="list-group-item">
-                <a href="{{ url_for('terria_au') }}" class="list-group-item">Australia</a>
-                <a href="{{ url_for('terria_afr') }}" class="list-group-item">Africa</a>
-                <a href="{{ url_for('terria_wps') }}" class="list-group-item">WPS</a>
+              <a href="{{ url_for('terria_au') }}" class="list-group-item"
+                >Australia</a
+              >
+              <a href="{{ url_for('terria_afr') }}" class="list-group-item"
+                >Africa</a
+              >
+              <a href="{{ url_for('terria_wps') }}" class="list-group-item"
+                >WPS</a
+              >
             </div>
           </div>
-          <a href="#" class="list-group-item list-group-item-action bg-light">OWS Pre-release comparison Tool</a>
+          <a href="#" class="list-group-item list-group-item-action bg-light"
+            >OWS Pre-release comparison Tool</a
+          >
           <div class="list-group">
             <div class="list-group-item">
-                <a href="{{ url_for('comp_legend') }}" class="list-group-item">Legend Comparison</a>
-                <a href="{{ url_for('comp_getmap') }}" class="list-group-item">GetMap Comparison</a>
-                <!-- <a href="{{ url_for('comp_getfeatureinfo') }}" class="list-group-item">GetFeatureInfo Comparison</a> -->
+              <a href="{{ url_for('comp_legend') }}" class="list-group-item"
+                >Legend Comparison</a
+              >
+              <a href="{{ url_for('comp_getmap') }}" class="list-group-item"
+                >GetMap Comparison</a
+              >
+              <!-- <a href="{{ url_for('comp_getfeatureinfo') }}" class="list-group-item">GetFeatureInfo Comparison</a> -->
             </div>
           </div>
+        </div>
       </div>
-    </div>
-    <!-- /#sidebar-wrapper -->
+      <!-- /#sidebar-wrapper -->
 
-    <!-- Page Content -->
-    <div id="page-content-wrapper">
+      <!-- Page Content -->
+      <div id="page-content-wrapper">
+        <nav
+          class="navbar navbar-expand-lg navbar-light bg-light border-bottom"
+        >
+          <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
 
-      <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-        <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
-
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-      </nav>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </nav>
 
         {% block page %} {% endblock %}
+      </div>
+      <!-- /#page-content-wrapper -->
     </div>
-    <!-- /#page-content-wrapper -->
+    <!-- /#wrapper -->
 
-  </div>
-  <!-- /#wrapper -->
+    <!-- Bootstrap core JavaScript -->
+    <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/wms.js') }}"></script>
 
-  <!-- Bootstrap core JavaScript -->
-  <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/wms.js') }}"></script>
-
-  <!-- Menu Toggle Script -->
-  <script>
-    $("#menu-toggle").click(function(e) {
-      e.preventDefault();
-      $("#wrapper").toggleClass("toggled");
-    });
-  </script>
+    <!-- Menu Toggle Script -->
+    <script>
+      $("#menu-toggle").click(function (e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+      });
+    </script>
     {% block script %} {% endblock%}
-</body>
-
+  </body>
 </html>
