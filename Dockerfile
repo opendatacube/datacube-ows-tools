@@ -22,9 +22,9 @@ RUN pip3 install -U pip && rm -rf $HOME/.cache/pip
 
 RUN pip3 install flask flask-s3 requests gunicorn gevent owslib && rm -rf $HOME/.cache/pip
 
-WORKDIR /opt/odc/dea-web-tools
+WORKDIR /opt/odc/datacube-ows-tools
 ADD . .
 
 EXPOSE 8000
 
-CMD ["gunicorn", "--bind", ":8000", "--timeout", "121", "dea-web-tools.app:app"]
+CMD ["gunicorn", "--bind", ":8000", "--timeout", "121", "datacube-ows-tools.app:app"]
