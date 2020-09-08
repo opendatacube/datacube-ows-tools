@@ -1,11 +1,11 @@
 version: "3"
 services:
-  dea-web-tools:
+  datacube-ows-tools:
     build: .
     volumes:
-      - .:/opt/odc/dea-web-tools
-      - static_volume:/opt/odc/dea-web-tools/dea-web-tools/static # <-- bind the static volume
-      - media_volume:/opt/odc/dea-web-tools/dea-web-tools/media # <-- bind the media volume
+      - .:/opt/odc/datacube-ows-tools
+      - static_volume:/opt/odc/datacube-ows-tools/datacube-ows-tools/static # <-- bind the static volume
+      - media_volume:/opt/odc/datacube-ows-tools/datacube-ows-tools/media # <-- bind the media volume
     networks:
       - nginx_network
 
@@ -15,10 +15,10 @@ services:
       - 8000:80
     volumes:
       - ./config/nginx/conf.d:/etc/nginx/conf.d
-      - static_volume:/opt/odc/dea-web-tools/dea-web-tools/static # <-- bind the static volume
-      - media_volume:/opt/odc/dea-web-tools/dea-web-tools/media # <-- bind the media volume
+      - static_volume:/opt/odc/datacube-ows-tools/datacube-ows-tools/static # <-- bind the static volume
+      - media_volume:/opt/odc/datacube-ows-tools/datacube-ows-tools/media # <-- bind the media volume
     depends_on:
-      - dea-web-tools
+      - datacube-ows-tools
     networks: # <-- here
       - nginx_network
 
