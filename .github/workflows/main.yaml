@@ -16,7 +16,7 @@ on:
     types: [created, edited]
 
 env:
-  ORG: geoscienceaustralia
+  ORG: opendatacube
   IMAGE: dea-web-tools
 
 jobs:
@@ -24,8 +24,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
       - name: Login to DockerHub
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Export Secrets to enviroment
         run: |
           echo "${{ secrets.DockerPassword }}" | docker login -u "${{ secrets.DockerUser }}" --password-stdin
 
