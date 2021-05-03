@@ -1,0 +1,84 @@
+{% extends "base.html" %} {% block page %}
+<div class="container-fluid">
+    <h1 class="mt-4">Catalog Comparison Tool</h1>
+    <div class="col-md-10 offset-2">
+        <div class="accordion" id="accordionExample">
+            <div class="card">
+                <div class="card-header" id="headingTwo">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                            data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            DEA PROD
+                        </button>
+                    </h2>
+                    Number of non-released wms layers: <b>{{ data.prod_non_released|length }}</b>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <h3>Catalog listing</h3>
+                                <p>catalog items count {{ data.prod_catalog_list|length}}</p>
+                                <ul class="no-bullets">
+                                    {% for layer in data.prod_wms_layers %}
+                                    <li {% if layer in data.prod_non_released %} class="missing" {% endif %}>{{ layer }}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="col-md-5">
+                                <h3>WMS layers</h3>
+                                <p>WMS layers count {{ data.prod_wms_layers|length}}</p>
+                                <ul class="no-bullets">
+                                    {% for layer in data.prod_wms_layers %}
+                                    <li {% if layer in data.prod_non_released %} class="missing" {% endif %}>{{ layer }}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
+                            aria-expanded="false" aria-controls="collapseOne">
+                            DEA DEV
+                        </button>
+                    </h2>
+                    Number of non-released wms layers: <b>{{ data.dev_non_released|length }}</b>
+                </div>
+                <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
+                    data-parent="#accordionExample">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <h3>Catalog listing</h3>
+                                <p>catalog items count {{ data.dev_catalog_list|length}}</p>
+                                <ul class="no-bullets">
+                                    {% for layer in data.dev_wms_layers %}
+                                    <li {% if layer in data.dev_non_released %} class="missing" {% endif %}>{{ layer }}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="col-md-5">
+                                <h3>WMS layers</h3>
+                                <p>WMS layers count {{ data.dev_wms_layers|length}}</p>
+                                <ul class="no-bullets">
+                                    {% for layer in data.dev_wms_layers %}
+                                    <li {% if layer in data.dev_non_released %} class="missing" {% endif %}>{{ layer }}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
