@@ -39,6 +39,8 @@ jobs:
           # figure out extra tag
           git fetch --prune --unshallow 2> /dev/null || true
           tag=$(git describe --tags)
+          # build local docker image
+          docker build -t ${ORG}/${IMAGE}:latest .
           # tag and push images
           docker tag ${ORG}/${IMAGE}:latest ${ORG}/${IMAGE}:${tag}
           docker push ${ORG}/${IMAGE}:latest
