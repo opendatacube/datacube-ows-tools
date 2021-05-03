@@ -2,6 +2,7 @@ import os
 import sys
 import uuid
 import json
+import urllib
 from flask import Flask, request, send_file, Response, send_from_directory
 from flask import render_template, jsonify, json as flask_json
 from flask_s3 import FlaskS3
@@ -33,7 +34,6 @@ def terria_wps():
 @app.route("/legend_comp")
 def comp_legend():
     return render_template("legend-comparison.html")
-
 
 @app.route("/getmap_comp")
 def comp_getmap():
@@ -73,6 +73,56 @@ def getmap_url_generator():
 
     # return jsonify(getmap_urls)
     return json.dumps(getmap_urls)
+
+# Utility functions
+@app.route("/catalog-match")
+def catalog_match_checker():
+    url = "https://raw.githubusercontent.com/GeoscienceAustralia/dea-config/master/dev/terria/dea.json"
+    catalog_json = urllib.request.urlopen(url)
+    data = json.loads(catalog_json.read())
+
+    prod_catalog_list = []
+    for catalog in data["catalog"]:
+        if catalog["name"] == "DEA Production":
+            for group in catalog["items"]:
+                for item in group["items"]:
+                    if "layers" in item:
+                        prod_catalog_list.append(item["layers"])
+                    else:
+                        for i in item["items"]:
+                            if "layers" in i:
+                                prod_catalog_list.append(i["layers"])
+
+
+    prod_wms_url = "https://ows.dea.ga.gov.au"
+    prod_wms = WebMapService(url=prod_wms_url + "/wms", version="1.3.0", timeout=120)
+    prod_wms_layers = list(prod_wms.contents)
+    prod_non_released = list(set(prod_wms_layers)-set(prod_catalog_list))
+
+
+    dev_catalog_list = []
+    for catalog in data["catalog"]:
+        if catalog["name"] == "DEA Development":
+            for group in catalog["items"]:
+                for item in group["items"]:
+                    if "layers" in item:
+                        dev_catalog_list.append(item["layers"])
+                    else:
+                        for i in item["items"]:
+                            if "layers" in i:
+                                dev_catalog_list.append(i["layers"])
+    dev_wms_url = "https://ows.dev.dea.ga.gov.au"
+    dev_wms = WebMapService(url=dev_wms_url + "/wms", version="1.3.0", timeout=120)
+    dev_wms_layers = list(dev_wms.contents)
+    dev_non_released = list(set(dev_wms_layers)-set(dev_catalog_list))
+    return render_template("catalog-comparison.html", data={
+        "dev_non_released": dev_non_released,
+        "prod_non_released": prod_non_released,
+        "prod_wms_layers": prod_wms_layers,
+        "dev_wms_layers": dev_wms_layers,
+        "dev_catalog_list": dev_catalog_list,
+        "prod_catalog_list": prod_catalog_list,
+    })
 
 
 @app.route("/jsongenerator", methods=["POST"])
