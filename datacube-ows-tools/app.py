@@ -7,7 +7,7 @@ from flask import Flask, request, send_file, Response, send_from_directory
 from flask import render_template, jsonify, json as flask_json
 from flask_s3 import FlaskS3
 from owslib.wms import WebMapService
-from .util import disjoint_bbox, enclosed_bbox, fixed_bbox
+from .util import disjoint_bbox, enclosed_bbox, fixed_bbox, v7_catalog_list, wms_endpoint_layers_list, v8_catalog_list
 
 app = Flask(__name__, static_url_path=os.getenv("STATIC_PATH", None))
 app.config["FLASKS3_BUCKET_NAME"] = "dea-web-webtools-static"
@@ -81,47 +81,32 @@ def catalog_match_checker():
     catalog_json = urllib.request.urlopen(url)
     data = json.loads(catalog_json.read())
 
-    prod_catalog_list = []
-    for catalog in data["catalog"]:
-        if catalog["name"] == "DEA Production":
-            for group in catalog["items"]:
-                for item in group["items"]:
-                    if "layers" in item:
-                        prod_catalog_list.append(item["layers"])
-                    else:
-                        for i in item["items"]:
-                            if "layers" in i:
-                                prod_catalog_list.append(i["layers"])
-
-
     prod_wms_url = "https://ows.dea.ga.gov.au"
-    prod_wms = WebMapService(url=prod_wms_url + "/wms", version="1.3.0", timeout=120)
-    prod_wms_layers = list(prod_wms.contents)
+    prod_catalog_list = v7_catalog_list(data, "DEA Production")
+    prod_wms_layers = wms_endpoint_layers_list(prod_wms_url)
     prod_non_released = list(set(prod_wms_layers)-set(prod_catalog_list))
 
-
-    dev_catalog_list = []
-    for catalog in data["catalog"]:
-        if catalog["name"] == "DEA Development":
-            for group in catalog["items"]:
-                for item in group["items"]:
-                    if "layers" in item:
-                        dev_catalog_list.append(item["layers"])
-                    else:
-                        for i in item["items"]:
-                            if "layers" in i:
-                                dev_catalog_list.append(i["layers"])
     dev_wms_url = "https://ows.dev.dea.ga.gov.au"
-    dev_wms = WebMapService(url=dev_wms_url + "/wms", version="1.3.0", timeout=120)
-    dev_wms_layers = list(dev_wms.contents)
+    dev_catalog_list = v7_catalog_list(data, "DEA Development")
+    dev_wms_layers = wms_endpoint_layers_list(dev_wms_url)
     dev_non_released = list(set(dev_wms_layers)-set(dev_catalog_list))
+
+    dea_map_url = "https://raw.githubusercontent.com/TerriaJS/saas-catalogs-public/main/de-australia/prod.json"
+    dea_catalog_json = urllib.request.urlopen(dea_map_url)
+    dea_map_data = json.loads(dea_catalog_json.read())
+
+    dea_map_catalog_list = v8_catalog_list(dea_map_data, prod_wms_url)
+    dea_map_non_released = list(set(prod_wms_layers)-set(dea_map_catalog_list))
+
     return render_template("catalog-comparison.html", data={
         "dev_non_released": dev_non_released,
-        "prod_non_released": prod_non_released,
-        "prod_wms_layers": prod_wms_layers,
         "dev_wms_layers": dev_wms_layers,
         "dev_catalog_list": dev_catalog_list,
+        "prod_non_released": prod_non_released,
+        "prod_wms_layers": prod_wms_layers,
         "prod_catalog_list": prod_catalog_list,
+        "dea_map_non_released": dea_map_non_released,
+        "dea_map_catalog_list": dea_map_catalog_list,
     })
 
 

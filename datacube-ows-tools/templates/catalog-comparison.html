@@ -8,7 +8,44 @@
                     <h2 class="mb-0">
                         <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
                             data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            DEA PROD
+                            dea-maps instance <=> DEA PROD OWS endpoint
+                        </button>
+                    </h2>
+                    Number of non-released wms layers: <b>{{ data.dea_map_non_released|length }}</b>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <h3>Catalog listing</h3>
+                                <p>catalog items count {{ data.dea_map_catalog_list|length}}</p>
+                                <ul class="no-bullets">
+                                    {% for layer in data.prod_wms_layers %}
+                                    <li {% if layer in data.dea_map_non_released %} class="missing" {% endif %}>{{ layer }}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="col-md-5">
+                                <h3>WMS layers</h3>
+                                <p>WMS layers count {{ data.prod_wms_layers|length}}</p>
+                                <ul class="no-bullets">
+                                    {% for layer in data.prod_wms_layers %}
+                                    <li {% if layer in data.dea_map_non_released %} class="missing" {% endif %}>{{ layer }}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingTwo">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                            data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Terria-cube instance <=> DEA PROD OWS endpoint
                         </button>
                     </h2>
                     Number of non-released wms layers: <b>{{ data.prod_non_released|length }}</b>
@@ -45,7 +82,7 @@
                     <h2 class="mb-0">
                         <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne"
                             aria-expanded="false" aria-controls="collapseOne">
-                            DEA DEV
+                            Terria-cube instance <=> DEA DEV OWS endpoint
                         </button>
                     </h2>
                     Number of non-released wms layers: <b>{{ data.dev_non_released|length }}</b>
