@@ -91,7 +91,7 @@ def catalog_match_checker():
     dev_wms_layers = wms_endpoint_layers_list(dev_wms_url)
     dev_non_released = list(set(dev_wms_layers)-set(dev_catalog_list))
 
-    dea_map_url = "https://raw.githubusercontent.com/TerriaJS/saas-catalogs-public/main/de-australia/prod.json"
+    dea_map_url = "https://raw.githubusercontent.com/GeoscienceAustralia/dea-config/master/dev/terria/dea-maps-v8.json"
     dea_catalog_json = urllib.request.urlopen(dea_map_url)
     dea_map_data = json.loads(dea_catalog_json.read())
 
