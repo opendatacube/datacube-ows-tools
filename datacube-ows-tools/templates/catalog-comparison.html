@@ -22,7 +22,7 @@
                                 <p>catalog items count {{ data.dea_map_catalog_list|length}}</p>
                                 <ul class="no-bullets">
                                     {% for layer in data.prod_wms_layers %}
-                                    <li {% if layer in data.dea_map_non_released %} class="missing" {% endif %}>{{ layer }}
+                                    <li {% if layer in data.dea_map_non_released %} style="visibility: hidden;" {% endif %}>{{ layer }}
                                     </li>
                                     {% endfor %}
                                 </ul>
@@ -59,7 +59,7 @@
                                 <p>catalog items count {{ data.prod_catalog_list|length}}</p>
                                 <ul class="no-bullets">
                                     {% for layer in data.prod_wms_layers %}
-                                    <li {% if layer in data.prod_non_released %} class="missing" {% endif %}>{{ layer }}
+                                    <li {% if layer in data.prod_non_released %} style="visibility: hidden;"  {% endif %}>{{ layer }}
                                     </li>
                                     {% endfor %}
                                 </ul>
@@ -97,7 +97,7 @@
                                 <p>catalog items count {{ data.dev_catalog_list|length}}</p>
                                 <ul class="no-bullets">
                                     {% for layer in data.dev_wms_layers %}
-                                    <li {% if layer in data.dev_non_released %} class="missing" {% endif %}>{{ layer }}
+                                    <li {% if layer in data.dev_non_released %} style="visibility: hidden;"  {% endif %}>{{ layer }}
                                     </li>
                                     {% endfor %}
                                 </ul>
