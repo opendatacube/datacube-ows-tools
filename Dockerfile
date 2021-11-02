@@ -1,4 +1,4 @@
-FROM ubuntu:lastest
+FROM ubuntu:20.04
 
 # Make sure apt doesn't ask questions
 ENV DEBIAN_FRONTEND=noninteractive
