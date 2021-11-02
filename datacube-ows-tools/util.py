@@ -78,4 +78,6 @@ def v8_catalog_list(catalog_data, wms_endpoint):
                                             if subsubsubitem["url"] == wms_endpoint + '/':
                                                 catalog_list.append(subsubsubitem["layers"])
 
+    print(catalog_data)
+
     return catalog_list

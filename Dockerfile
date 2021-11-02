@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:lastest
 
 # Make sure apt doesn't ask questions
 ENV DEBIAN_FRONTEND=noninteractive
