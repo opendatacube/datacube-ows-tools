@@ -77,34 +77,37 @@ def getmap_url_generator():
 # Utility functions
 @app.route("/catalog-match")
 def catalog_match_checker():
-    url = "https://raw.githubusercontent.com/GeoscienceAustralia/dea-config/master/dev/terria/dea.json"
-    catalog_json = urllib.request.urlopen(url)
-    data = json.loads(catalog_json.read())
 
     prod_wms_url = "https://ows.dea.ga.gov.au"
-    prod_catalog_list = v7_catalog_list(data, "DEA Production")
     prod_wms_layers = wms_endpoint_layers_list(prod_wms_url)
-    prod_non_released = list(set(prod_wms_layers)-set(prod_catalog_list))
-
     dev_wms_url = "https://ows.dev.dea.ga.gov.au"
-    dev_catalog_list = v7_catalog_list(data, "DEA Development")
     dev_wms_layers = wms_endpoint_layers_list(dev_wms_url)
-    dev_non_released = list(set(dev_wms_layers)-set(dev_catalog_list))
+
+    terria_url = "https://raw.githubusercontent.com/GeoscienceAustralia/dea-config/master/dev/terria/terria-cube-v8.json"
+    terria_catalog_json = urllib.request.urlopen(terria_url)
+    terria_data = json.loads(terria_catalog_json.read())
 
     dea_map_url = "https://raw.githubusercontent.com/GeoscienceAustralia/dea-config/master/dev/terria/dea-maps-v8.json"
     dea_catalog_json = urllib.request.urlopen(dea_map_url)
     dea_map_data = json.loads(dea_catalog_json.read())
 
+    terria_prod_catalog_list = v8_catalog_list(terria_data, prod_wms_url)
+    terria_prod_non_released = list(set(prod_wms_layers)-set(terria_prod_catalog_list))
+
+    terria_dev_catalog_list = v8_catalog_list(terria_data, dev_wms_url)
+    terria_dev_non_released = list(set(dev_wms_layers)-set(terria_dev_catalog_list))
+
+
     dea_map_catalog_list = v8_catalog_list(dea_map_data, prod_wms_url)
     dea_map_non_released = list(set(prod_wms_layers)-set(dea_map_catalog_list))
 
     return render_template("catalog-comparison.html", data={
-        "dev_non_released": dev_non_released,
+        "dev_non_released": terria_dev_non_released,
         "dev_wms_layers": dev_wms_layers,
-        "dev_catalog_list": dev_catalog_list,
-        "prod_non_released": prod_non_released,
+        "dev_catalog_list": terria_dev_catalog_list,
+        "prod_non_released": terria_prod_non_released,
         "prod_wms_layers": prod_wms_layers,
-        "prod_catalog_list": prod_catalog_list,
+        "prod_catalog_list": terria_prod_catalog_list,
         "dea_map_non_released": dea_map_non_released,
         "dea_map_catalog_list": dea_map_catalog_list,
     })
