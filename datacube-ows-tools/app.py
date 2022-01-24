@@ -85,7 +85,12 @@ def catalog_match_checker():
 
     terria_url = "https://raw.githubusercontent.com/GeoscienceAustralia/dea-config/master/dev/terria/terria-cube-v8.json"
     terria_catalog_json = urllib.request.urlopen(terria_url)
-    terria_data = json.loads(terria_catalog_json.read())
+    # TODO: optimise this
+    # this is to by pass JSONDecodeError: Invalid \escape: line 626 column 79 (char 68035)
+    a = terria_catalog_json.read().decode(terria_catalog_json.headers.get_content_charset())
+    b = a.replace("\\n", "iampin").replace("\\\n", "iamnotpin")
+    terria_data = json.loads(b)
+
 
     dea_map_url = "https://raw.githubusercontent.com/GeoscienceAustralia/dea-config/master/dev/terria/dea-maps-v8.json"
     dea_catalog_json = urllib.request.urlopen(dea_map_url)
