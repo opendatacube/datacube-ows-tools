@@ -50,28 +50,46 @@ def comp_getfeatureinfo():
 @app.route("/getmap-url-generator", methods=["POST"])
 def getmap_url_generator():
     getmap_urls = []
-    stable_url = request.get_json()
+    paramsJson = request.get_json()
+    stable_url = paramsJson['stable_url']
+    bbox = paramsJson['bbox']
+    crs = paramsJson['crs']
+
+    # print(f"request.get_json(): {request.get_json()}")
 
     wms = WebMapService(url=stable_url + "/wms", version="1.3.0", timeout=120)
     contents = list(wms.contents)
-    for layer in contents:
-        test_layer_name = layer
-        test_layer = wms.contents[test_layer_name]
+    for layer_name in contents:
+        layer = wms.contents[layer_name]
+
+        # Layer bbox and crs info. Not really useful to us.
+        # print(f"INFO: layer.boundingBox: {layer.boundingBox}")
+        # bbox_raw = layer.boundingBox # Array of 4 coordinates, plus a format specification such as EPSG:3857
+        # bbox_coordinates_url_encoded = '%2C'.join(map(str,bbox_raw[:4])) # First 4 elements -> str > separated with url encoding of comma.
+        # crs_url_encoded = "EPSG%3A" + bbox_raw[4].split(':')[1] # Note format is always 'EPSG:n' where n is the format
+
+        # print(f"INFO: Formatted: {bbox_coordinates_url_encoded, crs_url_encoded}")
+
+        # fixed_espg = "EPSG%3A3857"
+        # fixed_bbox = "15028131.257091936%2C-2504688.542848654%2C15654303.392804097%2C-1878516.4071364924"
+
+        # bbox=bbox_coordinates_url_encoded
+        # crs=crs_url_encoded
+
+        # print(f"INFO: Using bbox: {bbox} CRS: {crs}")
+
         time = ""
-        bbox = test_layer.boundingBoxWGS84
+        if layer.timepositions:
+            time = layer.timepositions[len(layer.timepositions) // 2].strip()
+
         layers_url_list = []
-        fixed_espg = "EPSG%3A3857"
-        fixed_bbox = "15028131.257091936%2C-2504688.542848654%2C15654303.392804097%2C-1878516.4071364924"
-        if test_layer.timepositions:
-            time = test_layer.timepositions[len(test_layer.timepositions) // 2].strip()
-        for style in test_layer.styles:
-            print(time, file=sys.stdout)
-
-            url = f"{stable_url}wms?service=WMS&version=1.3.0&request=GetMap&layers={test_layer_name}&styles={style}&width=250&height=250&crs={fixed_espg}&bbox={fixed_bbox}&format=image%2Fpng&transparent=TRUE&bgcolor=0xFFFFFF&exceptions=XML&time={time}"
+        for style in layer.styles:
+            # print(time, file=sys.stdout)
+            
+            url = f"{stable_url}wms?service=WMS&version=1.3.0&request=GetMap&layers={layer_name}&styles={style}&width=250&height=250&crs={crs}&bbox={bbox}&format=image%2Fpng&transparent=TRUE&bgcolor=0xFFFFFF&exceptions=XML&time={time}"
             layers_url_list.append({"style": style, "url": url})
-        getmap_urls.append({"name": test_layer_name, "layersList": layers_url_list})
+        getmap_urls.append({"name": layer_name, "layersList": layers_url_list})
 
-    # return jsonify(getmap_urls)
     return json.dumps(getmap_urls)
 
 # Utility functions
