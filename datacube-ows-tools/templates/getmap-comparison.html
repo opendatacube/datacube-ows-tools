@@ -23,6 +23,27 @@
         value="https://ows-ping.dev.dea.ga.gov.au/"
       />
     </div>
+    
+    <!-- Radio buttons -->
+    <div class="col-md-6">
+      Sample area:<br>
+      <input type="radio" id="bboxradio0" name="bboxarea"/>
+      <label for="bboxradio0">Cairns inland</label>
+      <br>
+
+      <input type="radio" id="bboxradio1" name="bboxarea"/>
+      <label for="bboxradio1">Inland water / swamp</label>
+      <br>
+
+      <input type="radio" id="bboxradio2" name="bboxarea"/>
+      <label for="bboxradio2">Dry inland</label>
+      <br>
+
+      <input type="radio" id="bboxradio3" name="bboxarea"/>
+      <label for="bboxradio3">Mountains</label>
+      <br>
+    </div>
+
     <div class="col-md-12" id="pull-data">
       <button class="btn btn-primary" id="compareLegends">Compare</button>
     </div>
@@ -39,10 +60,54 @@
       $("#getmap-compare-row").empty();
       var stableowsurl = $("#stable-ows-url").val();
       var comparableowsurl = $("#comparable-ows-url").val();
+      var radioActive = -1 // Default
+
+      // Wow is it *actually* this convoluted... they should be in a heirarchy
+      // Thanks to: https://stackoverflow.com/a/9618826
+      var radios = document.getElementsByName('bboxarea');
+      for (var i = 0, length = radios.length; i < length; i++) {
+        if (radios[i].checked) {
+          radioActive = i; //radios[i].value;
+          break; // only one radio can be logically checked, don't check the rest
+        }
+      }
+
+      // Now substitute the appropriate bbox... (%2C is comma)
+      switch(radioActive) {
+        case 0: // Cairns
+          staticBbox = "16202204.01155224%2C-1956787.9241005108%2C16221771.890793245%2C-1937220.0448595062"
+          staticCrs = "EPSG%3A3857"
+          break;
+
+        case 1: // Inland water / swamp
+          staticBbox = "15771710.668250125%2C-3209132.1955248415%2C15791278.54749113%2C-3189564.3162838332"
+          staticCrs = "EPSG%3A3857"
+          break;
+
+        case 2: // Dry inland. Could be updated to something more specific later.
+          staticBbox = "13604568.042308811%2C-3135752.6483710706%2C13609460.012119059%2C-3130860.6785608195"
+          staticCrs = "EPSG%3A3857"
+          break;
+
+        case 3: // Mountains
+          staticBbox = "16662049.173715863%2C-4304933.433021128%2C16671833.113336366%2C-4295149.493400626"
+          staticCrs = "EPSG%3A3857"
+          break;
+
+        default:
+          staticBbox = "15028131.257091936%2C-2504688.542848654%2C15654303.392804097%2C-1878516.4071364924"
+          staticCrs = "EPSG%3A3857"
+      }
+
+      var paramsblob = {}
+      paramsblob['stable_url'] = stableowsurl // Note that comparableowsurl gets substituted in at the point of loading images. getmap_url_generator() does not use it.
+      paramsblob['bbox'] = staticBbox
+      paramsblob['crs'] = staticCrs
+
       $.ajax({
         url: "{{ url_for('getmap_url_generator') }}",
         type: "POST",
-        data: JSON.stringify($("#stable-ows-url").val()),
+        data: JSON.stringify(paramsblob),
         contentType: "application/json; charset=UTF-8",
         dataType: "json",
         success: function (data) {
@@ -60,9 +125,9 @@
               $("#getmap-compare-row").append(
                 "<h4>" +
                   urls["style"] +
-                  '</h4><div class="row"><img width="50%" height="250px" src=' +
+                  '</h4><div class="row"><img width="50%" src=' +
                   stablegetmapImageSrc +
-                  '><img width="50%" height="250px" src=' +
+                  '><img width="50%" src=' +
                   comparablegetmapImageSrc +
                   "></div>"
               );
