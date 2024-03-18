@@ -55,6 +55,6 @@ function createCatalog() {
       //     }
       // );
       // end of get
-    }
+    },
   );
 }
