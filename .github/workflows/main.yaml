@@ -9,7 +9,6 @@ on:
   release:
     types: [created, edited, published]
 
-
 env:
   ORG: opendatacube
   IMAGE: dea-web-tools

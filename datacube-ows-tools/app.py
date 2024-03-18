@@ -7,11 +7,19 @@ from flask import Flask, request, send_file, Response, send_from_directory
 from flask import render_template, jsonify, json as flask_json
 from flask_s3 import FlaskS3
 from owslib.wms import WebMapService
-from .util import disjoint_bbox, enclosed_bbox, fixed_bbox, v7_catalog_list, wms_endpoint_layers_list, v8_catalog_list
+from .util import (
+    disjoint_bbox,
+    enclosed_bbox,
+    fixed_bbox,
+    v7_catalog_list,
+    wms_endpoint_layers_list,
+    v8_catalog_list,
+)
 
 app = Flask(__name__, static_url_path=os.getenv("STATIC_PATH", None))
 app.config["FLASKS3_BUCKET_NAME"] = "dea-web-webtools-static"
 s3 = FlaskS3(app)
+
 
 # for terria catalog generator
 @app.route("/")
@@ -35,6 +43,7 @@ def terria_wps():
 def comp_legend():
     return render_template("legend-comparison.html")
 
+
 @app.route("/getmap_comp")
 def comp_getmap():
 
@@ -51,9 +60,9 @@ def comp_getfeatureinfo():
 def getmap_url_generator():
     getmap_urls = []
     paramsJson = request.get_json()
-    stable_url = paramsJson['stable_url']
-    bbox = paramsJson['bbox']
-    crs = paramsJson['crs']
+    stable_url = paramsJson["stable_url"]
+    bbox = paramsJson["bbox"]
+    crs = paramsJson["crs"]
 
     # print(f"request.get_json(): {request.get_json()}")
 
@@ -85,12 +94,13 @@ def getmap_url_generator():
         layers_url_list = []
         for style in layer.styles:
             # print(time, file=sys.stdout)
-            
+
             url = f"{stable_url}wms?service=WMS&version=1.3.0&request=GetMap&layers={layer_name}&styles={style}&width=250&height=250&crs={crs}&bbox={bbox}&format=image%2Fpng&transparent=TRUE&bgcolor=0xFFFFFF&exceptions=XML&time={time}"
             layers_url_list.append({"style": style, "url": url})
         getmap_urls.append({"name": layer_name, "layersList": layers_url_list})
 
     return json.dumps(getmap_urls)
+
 
 # Utility functions
 @app.route("/catalog-match")
@@ -105,35 +115,40 @@ def catalog_match_checker():
     terria_catalog_json = urllib.request.urlopen(terria_url)
     # TODO: optimise this
     # this is to by pass JSONDecodeError: Invalid \escape: line 626 column 79 (char 68035)
-    a = terria_catalog_json.read().decode(terria_catalog_json.headers.get_content_charset())
+    a = terria_catalog_json.read().decode(
+        terria_catalog_json.headers.get_content_charset()
+    )
     b = a.replace("\\n", "iampin").replace("\\\n", "iamnotpin")
     terria_data = json.loads(b)
-
 
     dea_map_url = "https://raw.githubusercontent.com/GeoscienceAustralia/dea-config/master/dev/terria/dea-maps-v8.json"
     dea_catalog_json = urllib.request.urlopen(dea_map_url)
     dea_map_data = json.loads(dea_catalog_json.read())
 
     terria_prod_catalog_list = v8_catalog_list(terria_data, prod_wms_url)
-    terria_prod_non_released = list(set(prod_wms_layers)-set(terria_prod_catalog_list))
+    terria_prod_non_released = list(
+        set(prod_wms_layers) - set(terria_prod_catalog_list)
+    )
 
     terria_dev_catalog_list = v8_catalog_list(terria_data, dev_wms_url)
-    terria_dev_non_released = list(set(dev_wms_layers)-set(terria_dev_catalog_list))
-
+    terria_dev_non_released = list(set(dev_wms_layers) - set(terria_dev_catalog_list))
 
     dea_map_catalog_list = v8_catalog_list(dea_map_data, prod_wms_url)
-    dea_map_non_released = list(set(prod_wms_layers)-set(dea_map_catalog_list))
+    dea_map_non_released = list(set(prod_wms_layers) - set(dea_map_catalog_list))
 
-    return render_template("catalog-comparison.html", data={
-        "dev_non_released": terria_dev_non_released,
-        "dev_wms_layers": dev_wms_layers,
-        "dev_catalog_list": terria_dev_catalog_list,
-        "prod_non_released": terria_prod_non_released,
-        "prod_wms_layers": prod_wms_layers,
-        "prod_catalog_list": terria_prod_catalog_list,
-        "dea_map_non_released": dea_map_non_released,
-        "dea_map_catalog_list": dea_map_catalog_list,
-    })
+    return render_template(
+        "catalog-comparison.html",
+        data={
+            "dev_non_released": terria_dev_non_released,
+            "dev_wms_layers": dev_wms_layers,
+            "dev_catalog_list": terria_dev_catalog_list,
+            "prod_non_released": terria_prod_non_released,
+            "prod_wms_layers": prod_wms_layers,
+            "prod_catalog_list": terria_prod_catalog_list,
+            "dea_map_non_released": dea_map_non_released,
+            "dea_map_catalog_list": dea_map_catalog_list,
+        },
+    )
 
 
 @app.route("/jsongenerator", methods=["POST"])

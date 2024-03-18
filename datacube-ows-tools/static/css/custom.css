@@ -24,15 +24,15 @@
   padding-left: 45px;
 }
 ul.no-bullets {
-    list-style-type: none; /* Remove bullets */
-    padding: 0; /* Remove padding */
-    margin: 0; /* Remove margins */
+  list-style-type: none; /* Remove bullets */
+  padding: 0; /* Remove padding */
+  margin: 0; /* Remove margins */
 }
 ul.no-bullets li {
-    color: green;
+  color: green;
 }
 
 ul.no-bullets li.missing {
-    color: red;
-    font-weight: bold;
+  color: red;
+  font-weight: bold;
 }

@@ -189,7 +189,7 @@
       return this.pushStack(
         jQuery.map(this, function (elem, i) {
           return callback.call(elem, i, elem);
-        })
+        }),
       );
     },
 
@@ -480,11 +480,11 @@
   // Populate the class2type map
   jQuery.each(
     "Boolean Number String Function Array Date RegExp Object Error Symbol".split(
-      " "
+      " ",
     ),
     function (i, name) {
       class2type["[object " + name + "]"] = name.toLowerCase();
-    }
+    },
   );
 
   function isArrayLike(obj) {
@@ -614,11 +614,11 @@
         rwhitespace = new RegExp(whitespace + "+", "g"),
         rtrim = new RegExp(
           "^" + whitespace + "+|((?:^|[^\\\\])(?:\\\\.)*)" + whitespace + "+$",
-          "g"
+          "g",
         ),
         rcomma = new RegExp("^" + whitespace + "*," + whitespace + "*"),
         rcombinators = new RegExp(
-          "^" + whitespace + "*([>+~]|" + whitespace + ")" + whitespace + "*"
+          "^" + whitespace + "*([>+~]|" + whitespace + ")" + whitespace + "*",
         ),
         rdescend = new RegExp(whitespace + "|>"),
         rpseudo = new RegExp(pseudos),
@@ -639,7 +639,7 @@
               "*(\\d+)|))" +
               whitespace +
               "*\\)|)",
-            "i"
+            "i",
           ),
           bool: new RegExp("^(?:" + booleans + ")$", "i"),
           // For use in libraries implementing .is()
@@ -652,7 +652,7 @@
               "*((?:-\\d)?\\d*)" +
               whitespace +
               "*\\)|)(?=[^-]|$)",
-            "i"
+            "i",
           ),
         },
         rhtml = /HTML$/i,
@@ -666,7 +666,7 @@
         // http://www.w3.org/TR/CSS21/syndata.html#escaped-characters
         runescape = new RegExp(
           "\\\\([\\da-f]{1,6}" + whitespace + "?|(" + whitespace + ")|.)",
-          "ig"
+          "ig",
         ),
         funescape = function (_, escaped, escapedWhitespace) {
           var high = "0x" + escaped - 0x10000;
@@ -676,13 +676,13 @@
           return high !== high || escapedWhitespace
             ? escaped
             : high < 0
-            ? // BMP codepoint
-              String.fromCharCode(high + 0x10000)
-            : // Supplemental Plane codepoint (surrogate pair)
-              String.fromCharCode(
-                (high >> 10) | 0xd800,
-                (high & 0x3ff) | 0xdc00
-              );
+              ? // BMP codepoint
+                String.fromCharCode(high + 0x10000)
+              : // Supplemental Plane codepoint (surrogate pair)
+                String.fromCharCode(
+                  (high >> 10) | 0xd800,
+                  (high & 0x3ff) | 0xdc00,
+                );
         },
         // CSS string/identifier serialization
         // https://drafts.csswg.org/cssom/#common-serializing-idioms
@@ -720,14 +720,14 @@
               elem.nodeName.toLowerCase() === "fieldset"
             );
           },
-          { dir: "parentNode", next: "legend" }
+          { dir: "parentNode", next: "legend" },
         );
 
       // Optimize for push.apply( _, NodeList )
       try {
         push.apply(
           (arr = slice.call(preferredDoc.childNodes)),
-          preferredDoc.childNodes
+          preferredDoc.childNodes,
         );
         // Support: Android<4.0
         // Detect silently failing push.apply
@@ -1115,7 +1115,7 @@
         // Assume HTML when documentElement doesn't yet exist, such as inside loading iframes
         // https://bugs.jquery.com/ticket/4833
         return !rhtml.test(
-          namespace || (docElem && docElem.nodeName) || "HTML"
+          namespace || (docElem && docElem.nodeName) || "HTML",
         );
       };
 
@@ -1178,7 +1178,7 @@
 
         // Support: IE<9
         support.getElementsByClassName = rnative.test(
-          document.getElementsByClassName
+          document.getElementsByClassName,
         );
 
         // Support: IE<10
@@ -1344,7 +1344,7 @@
             // Boolean attributes and "value" are not treated correctly
             if (!el.querySelectorAll("[selected]").length) {
               rbuggyQSA.push(
-                "\\[" + whitespace + "*(?:value|" + booleans + ")"
+                "\\[" + whitespace + "*(?:value|" + booleans + ")",
               );
             }
 
@@ -1411,7 +1411,7 @@
               docElem.webkitMatchesSelector ||
               docElem.mozMatchesSelector ||
               docElem.oMatchesSelector ||
-              docElem.msMatchesSelector)
+              docElem.msMatchesSelector),
           ))
         ) {
           assert(function (el) {
@@ -1540,14 +1540,14 @@
                 return a === document
                   ? -1
                   : b === document
-                  ? 1
-                  : aup
-                  ? -1
-                  : bup
-                  ? 1
-                  : sortInput
-                  ? indexOf(sortInput, a) - indexOf(sortInput, b)
-                  : 0;
+                    ? 1
+                    : aup
+                      ? -1
+                      : bup
+                        ? 1
+                        : sortInput
+                          ? indexOf(sortInput, a) - indexOf(sortInput, b)
+                          : 0;
 
                 // If the nodes are siblings, we can do a quick check
               } else if (aup === bup) {
@@ -1573,11 +1573,11 @@
                 ? // Do a sibling check if the nodes have a common ancestor
                   siblingCheck(ap[i], bp[i])
                 : // Otherwise nodes in our document sort first
-                ap[i] === preferredDoc
-                ? -1
-                : bp[i] === preferredDoc
-                ? 1
-                : 0;
+                  ap[i] === preferredDoc
+                  ? -1
+                  : bp[i] === preferredDoc
+                    ? 1
+                    : 0;
             };
 
         return document;
@@ -1645,10 +1645,10 @@
         return val !== undefined
           ? val
           : support.attributes || !documentIsHTML
-          ? elem.getAttribute(name)
-          : (val = elem.getAttributeNode(name)) && val.specified
-          ? val.value
-          : null;
+            ? elem.getAttribute(name)
+            : (val = elem.getAttributeNode(name)) && val.specified
+              ? val.value
+              : null;
       };
 
       Sizzle.escape = function (sel) {
@@ -1753,7 +1753,7 @@
             // Move the given value to match[3] whether quoted or unquoted
             match[3] = (match[3] || match[4] || match[5] || "").replace(
               runescape,
-              funescape
+              funescape,
             );
 
             if (match[2] === "~=") {
@@ -1852,14 +1852,14 @@
             return (
               pattern ||
               ((pattern = new RegExp(
-                "(^|" + whitespace + ")" + className + "(" + whitespace + "|$)"
+                "(^|" + whitespace + ")" + className + "(" + whitespace + "|$)",
               )) &&
                 classCache(className, function (elem) {
                   return pattern.test(
                     (typeof elem.className === "string" && elem.className) ||
                       (typeof elem.getAttribute !== "undefined" &&
                         elem.getAttribute("class")) ||
-                      ""
+                      "",
                   );
                 }))
             );
@@ -1881,21 +1881,23 @@
               return operator === "="
                 ? result === check
                 : operator === "!="
-                ? result !== check
-                : operator === "^="
-                ? check && result.indexOf(check) === 0
-                : operator === "*="
-                ? check && result.indexOf(check) > -1
-                : operator === "$="
-                ? check && result.slice(-check.length) === check
-                : operator === "~="
-                ? (" " + result.replace(rwhitespace, " ") + " ").indexOf(
-                    check
-                  ) > -1
-                : operator === "|="
-                ? result === check ||
-                  result.slice(0, check.length + 1) === check + "-"
-                : false;
+                  ? result !== check
+                  : operator === "^="
+                    ? check && result.indexOf(check) === 0
+                    : operator === "*="
+                      ? check && result.indexOf(check) > -1
+                      : operator === "$="
+                        ? check && result.slice(-check.length) === check
+                        : operator === "~="
+                          ? (
+                              " " +
+                              result.replace(rwhitespace, " ") +
+                              " "
+                            ).indexOf(check) > -1
+                          : operator === "|="
+                            ? result === check ||
+                              result.slice(0, check.length + 1) === check + "-"
+                            : false;
             };
           },
 
@@ -2283,8 +2285,8 @@
               argument < 0
                 ? argument + length
                 : argument > length
-                ? length
-                : argument;
+                  ? length
+                  : argument;
             for (; --i >= 0; ) {
               matchIndexes.push(i);
             }
@@ -2390,9 +2392,9 @@
         return parseOnly
           ? soFar.length
           : soFar
-          ? Sizzle.error(selector)
-          : // Cache the tokens
-            tokenCache(selector, groups).slice(0);
+            ? Sizzle.error(selector)
+            : // Cache the tokens
+              tokenCache(selector, groups).slice(0);
       };
 
       function toSelector(tokens) {
@@ -2524,7 +2526,7 @@
         matcher,
         postFilter,
         postFinder,
-        postSelector
+        postSelector,
       ) {
         if (postFilter && !postFilter[expando]) {
           postFilter = setMatcher(postFilter);
@@ -2545,7 +2547,7 @@
               multipleContexts(
                 selector || "*",
                 context.nodeType ? [context] : context,
-                []
+                [],
               ),
             // Prefilter to get matcher input, preserving a map for seed-results synchronization
             matcherIn =
@@ -2612,7 +2614,7 @@
             matcherOut = condense(
               matcherOut === results
                 ? matcherOut.splice(preexisting, matcherOut.length)
-                : matcherOut
+                : matcherOut,
             );
             if (postFinder) {
               postFinder(null, results, matcherOut, xml);
@@ -2637,14 +2639,14 @@
               return elem === checkContext;
             },
             implicitRelative,
-            true
+            true,
           ),
           matchAnyContext = addCombinator(
             function (elem) {
               return indexOf(checkContext, elem) > -1;
             },
             implicitRelative,
-            true
+            true,
           ),
           matchers = [
             function (elem, context, xml) {
@@ -2665,7 +2667,7 @@
           } else {
             matcher = Expr.filter[tokens[i].type].apply(
               null,
-              tokens[i].matches
+              tokens[i].matches,
             );
 
             // Return special upon seeing a positional matcher
@@ -2684,12 +2686,12 @@
                     // If the preceding token was a descendant combinator, insert an implicit any-element `*`
                     tokens
                       .slice(0, i - 1)
-                      .concat({ value: tokens[i - 2].type === " " ? "*" : "" })
+                      .concat({ value: tokens[i - 2].type === " " ? "*" : "" }),
                   ).replace(rtrim, "$1"),
                 matcher,
                 i < j && matcherFromTokens(tokens.slice(i, j)),
                 j < len && matcherFromTokens((tokens = tokens.slice(j))),
-                j < len && toSelector(tokens)
+                j < len && toSelector(tokens),
               );
             }
             matchers.push(matcher);
@@ -2816,7 +2818,7 @@
 
       compile = Sizzle.compile = function (
         selector,
-        match /* Internal Use Only */
+        match /* Internal Use Only */,
       ) {
         var i,
           setMatchers = [],
@@ -2841,7 +2843,7 @@
           // Cache the compiled function
           cached = compilerCache(
             selector,
-            matcherFromGroupMatchers(elementMatchers, setMatchers)
+            matcherFromGroupMatchers(elementMatchers, setMatchers),
           );
 
           // Save selector and tokenization
@@ -2884,7 +2886,7 @@
           ) {
             context = (Expr.find["ID"](
               token.matches[0].replace(runescape, funescape),
-              context
+              context,
             ) || [])[0];
             if (!context) {
               return results;
@@ -2913,7 +2915,7 @@
                   token.matches[0].replace(runescape, funescape),
                   (rsibling.test(tokens[0].type) &&
                     testContext(context.parentNode)) ||
-                    context
+                    context,
                 ))
               ) {
                 // If seed is empty or no tokens remain, we can return early
@@ -2939,7 +2941,7 @@
           results,
           !context ||
             (rsibling.test(selector) && testContext(context.parentNode)) ||
-            context
+            context,
         );
         return results;
       };
@@ -2979,7 +2981,7 @@
           if (!isXML) {
             return elem.getAttribute(
               name,
-              name.toLowerCase() === "type" ? 1 : 2
+              name.toLowerCase() === "type" ? 1 : 2,
             );
           }
         });
@@ -3015,8 +3017,8 @@
             return elem[name] === true
               ? name.toLowerCase()
               : (val = elem.getAttributeNode(name)) && val.specified
-              ? val.value
-              : null;
+                ? val.value
+                : null;
           }
         });
       }
@@ -3067,7 +3069,8 @@
   function nodeName(elem, name) {
     return elem.nodeName && elem.nodeName.toLowerCase() === name.toLowerCase();
   }
-  var rsingleTag = /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
+  var rsingleTag =
+    /^<([a-z][^\/\0>:\x20\t\r\n\f]*)[\x20\t\r\n\f]*\/?>(?:<\/\1>|)$/i;
 
   // Implement the identical functionality for filter and not
   function winnow(elements, qualifier, not) {
@@ -3110,7 +3113,7 @@
       expr,
       jQuery.grep(elems, function (elem) {
         return elem.nodeType === 1;
-      })
+      }),
     );
   };
 
@@ -3129,7 +3132,7 @@
                 return true;
               }
             }
-          })
+          }),
         );
       }
 
@@ -3156,7 +3159,7 @@
         typeof selector === "string" && rneedsContext.test(selector)
           ? jQuery(selector)
           : selector || [],
-        false
+        false,
       ).length;
     },
   });
@@ -3210,8 +3213,8 @@
                 context && context.nodeType
                   ? context.ownerDocument || context
                   : document,
-                true
-              )
+                true,
+              ),
             );
 
             // HANDLE: $(html, props)
@@ -3328,7 +3331,7 @@
       }
 
       return this.pushStack(
-        matched.length > 1 ? jQuery.uniqueSort(matched) : matched
+        matched.length > 1 ? jQuery.uniqueSort(matched) : matched,
       );
     },
 
@@ -3351,19 +3354,19 @@
         this,
 
         // If it receives a jQuery object, the first element is used
-        elem.jquery ? elem[0] : elem
+        elem.jquery ? elem[0] : elem,
       );
     },
 
     add: function (selector, context) {
       return this.pushStack(
-        jQuery.uniqueSort(jQuery.merge(this.get(), jQuery(selector, context)))
+        jQuery.uniqueSort(jQuery.merge(this.get(), jQuery(selector, context))),
       );
     },
 
     addBack: function (selector) {
       return this.add(
-        selector == null ? this.prevObject : this.prevObject.filter(selector)
+        selector == null ? this.prevObject : this.prevObject.filter(selector),
       );
     },
   });
@@ -3450,7 +3453,7 @@
 
         return this.pushStack(matched);
       };
-    }
+    },
   );
   var rnothtmlwhite = /[^\x20\t\r\n\f]+/g;
 
@@ -3767,7 +3770,7 @@
                     } else {
                       newDefer[tuple[0] + "With"](
                         this,
-                        fn ? [returned] : arguments
+                        fn ? [returned] : arguments,
                       );
                     }
                   });
@@ -3820,7 +3823,7 @@
                         then.call(
                           returned,
                           resolve(maxDepth, deferred, Identity, special),
-                          resolve(maxDepth, deferred, Thrower, special)
+                          resolve(maxDepth, deferred, Thrower, special),
                         );
 
                         // Normal processors (resolve) also hook into progress
@@ -3836,8 +3839,8 @@
                             maxDepth,
                             deferred,
                             Identity,
-                            deferred.notifyWith
-                          )
+                            deferred.notifyWith,
+                          ),
                         );
                       }
 
@@ -3865,7 +3868,7 @@
                           if (jQuery.Deferred.exceptionHook) {
                             jQuery.Deferred.exceptionHook(
                               e,
-                              process.stackTrace
+                              process.stackTrace,
                             );
                           }
 
@@ -3910,8 +3913,8 @@
                     0,
                     newDefer,
                     isFunction(onProgress) ? onProgress : Identity,
-                    newDefer.notifyWith
-                  )
+                    newDefer.notifyWith,
+                  ),
                 );
 
                 // fulfilled_handlers.add( ... )
@@ -3919,8 +3922,8 @@
                   resolve(
                     0,
                     newDefer,
-                    isFunction(onFulfilled) ? onFulfilled : Identity
-                  )
+                    isFunction(onFulfilled) ? onFulfilled : Identity,
+                  ),
                 );
 
                 // rejected_handlers.add( ... )
@@ -3928,8 +3931,8 @@
                   resolve(
                     0,
                     newDefer,
-                    isFunction(onRejected) ? onRejected : Thrower
-                  )
+                    isFunction(onRejected) ? onRejected : Thrower,
+                  ),
                 );
               })
               .promise();
@@ -3974,7 +3977,7 @@
             tuples[0][2].lock,
 
             // progress_handlers.lock
-            tuples[0][3].lock
+            tuples[0][3].lock,
           );
         }
 
@@ -3989,7 +3992,7 @@
         deferred[tuple[0]] = function () {
           deferred[tuple[0] + "With"](
             this === deferred ? undefined : this,
-            arguments
+            arguments,
           );
           return this;
         };
@@ -4041,7 +4044,7 @@
           singleValue,
           master.done(updateFunc(i)).resolve,
           master.reject,
-          !remaining
+          !remaining,
         );
 
         // Use .then() to unwrap secondary thenables (cf. gh-3000)
@@ -4078,7 +4081,7 @@
       window.console.warn(
         "jQuery.Deferred exception: " + error.message,
         error.stack,
-        stack
+        stack,
       );
     }
   };
@@ -4203,7 +4206,7 @@
           fn(
             elems[i],
             key,
-            raw ? value : value.call(elems[i], i, fn(elems[i], key))
+            raw ? value : value.call(elems[i], i, fn(elems[i], key)),
           );
         }
       }
@@ -4554,7 +4557,7 @@
         value,
         arguments.length > 1,
         null,
-        true
+        true,
       );
     },
 
@@ -4951,8 +4954,11 @@
   // Support: IE <=9 only
   wrapMap.optgroup = wrapMap.option;
 
-  wrapMap.tbody = wrapMap.tfoot = wrapMap.colgroup = wrapMap.caption =
-    wrapMap.thead;
+  wrapMap.tbody =
+    wrapMap.tfoot =
+    wrapMap.colgroup =
+    wrapMap.caption =
+      wrapMap.thead;
   wrapMap.th = wrapMap.td;
 
   function getAll(context, tag) {
@@ -4984,7 +4990,7 @@
       dataPriv.set(
         elems[i],
         "globalEval",
-        !refElements || dataPriv.get(refElements[i], "globalEval")
+        !refElements || dataPriv.get(refElements[i], "globalEval"),
       );
     }
   }
@@ -5287,7 +5293,7 @@
               selector && jQuery.expr.match.needsContext.test(selector),
             namespace: namespaces.join("."),
           },
-          handleObjIn
+          handleObjIn,
         );
 
         // Init the event handler queue if we're the first
@@ -5729,7 +5735,7 @@
               // Extend with the prototype to reset the above stopImmediatePropagation()
               jQuery.extend(saved[0], jQuery.Event.prototype),
               saved.slice(1),
-              this
+              this,
             ),
           });
 
@@ -5902,35 +5908,35 @@
         return event.which;
       },
     },
-    jQuery.event.addProp
+    jQuery.event.addProp,
   );
 
-  jQuery.each({ focus: "focusin", blur: "focusout" }, function (
-    type,
-    delegateType
-  ) {
-    jQuery.event.special[type] = {
-      // Utilize native event if possible so blur/focus sequence is correct
-      setup: function () {
-        // Claim the first handler
-        // dataPriv.set( this, "focus", ... )
-        // dataPriv.set( this, "blur", ... )
-        leverageNative(this, type, expectSync);
+  jQuery.each(
+    { focus: "focusin", blur: "focusout" },
+    function (type, delegateType) {
+      jQuery.event.special[type] = {
+        // Utilize native event if possible so blur/focus sequence is correct
+        setup: function () {
+          // Claim the first handler
+          // dataPriv.set( this, "focus", ... )
+          // dataPriv.set( this, "blur", ... )
+          leverageNative(this, type, expectSync);
 
-        // Return false to allow normal processing in the caller
-        return false;
-      },
-      trigger: function () {
-        // Force setup before trigger
-        leverageNative(this, type);
+          // Return false to allow normal processing in the caller
+          return false;
+        },
+        trigger: function () {
+          // Force setup before trigger
+          leverageNative(this, type);
 
-        // Return non-false to allow normal event-path propagation
-        return true;
-      },
+          // Return non-false to allow normal event-path propagation
+          return true;
+        },
 
-      delegateType: delegateType,
-    };
-  });
+        delegateType: delegateType,
+      };
+    },
+  );
 
   // Create mouseenter/leave events using mouseover/out and event-time checks
   // so that event delegation works in jQuery.
@@ -5971,7 +5977,7 @@
           return ret;
         },
       };
-    }
+    },
   );
 
   jQuery.fn.extend({
@@ -5991,7 +5997,7 @@
             ? handleObj.origType + "." + handleObj.namespace
             : handleObj.origType,
           handleObj.selector,
-          handleObj.handler
+          handleObj.handler,
         );
         return this;
       }
@@ -6019,7 +6025,8 @@
   var /* eslint-disable max-len */
 
     // See https://github.com/eslint/eslint/issues/3229
-    rxhtmlTag = /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([a-z][^\/\0>\x20\t\r\n\f]*)[^>]*)\/>/gi,
+    rxhtmlTag =
+      /<(?!area|br|col|embed|hr|img|input|link|meta|param)(([a-z][^\/\0>\x20\t\r\n\f]*)[^>]*)\/>/gi,
     /* eslint-enable */
 
     // Support: IE <=10 - 11, Edge 12 - 13 only
@@ -6144,7 +6151,7 @@
         collection[0].ownerDocument,
         false,
         collection,
-        ignored
+        ignored,
       );
       first = fragment.firstChild;
 
@@ -6346,7 +6353,7 @@
         },
         null,
         value,
-        arguments.length
+        arguments.length,
       );
     },
 
@@ -6462,7 +6469,7 @@
         },
         null,
         value,
-        arguments.length
+        arguments.length,
       );
     },
 
@@ -6485,7 +6492,7 @@
 
           // Force callback invocation
         },
-        ignored
+        ignored,
       );
     },
   });
@@ -6517,7 +6524,7 @@
 
         return this.pushStack(ret);
       };
-    }
+    },
   );
   var rnumnonpx = new RegExp("^(" + pnum + ")(?!px)[a-z%]+$", "i");
 
@@ -6761,7 +6768,7 @@
     box,
     isBorderBox,
     styles,
-    computedVal
+    computedVal,
   ) {
     var i = dimension === "width" ? 1 : 0,
       extra = 0,
@@ -6789,7 +6796,7 @@
             elem,
             "border" + cssExpand[i] + "Width",
             true,
-            styles
+            styles,
           );
 
           // But still keep track of it otherwise
@@ -6798,7 +6805,7 @@
             elem,
             "border" + cssExpand[i] + "Width",
             true,
-            styles
+            styles,
           );
         }
 
@@ -6816,7 +6823,7 @@
             elem,
             "border" + cssExpand[i] + "Width",
             true,
-            styles
+            styles,
           );
         }
       }
@@ -6834,11 +6841,11 @@
               computedVal -
               delta -
               extra -
-              0.5
+              0.5,
 
             // If offsetWidth/offsetHeight is unknown, then we can't determine content-box scroll gutter
             // Use an explicit zero to avoid NaN (gh-3964)
-          )
+          ),
         ) || 0;
     }
 
@@ -6908,7 +6915,7 @@
         styles,
 
         // Provide the current computed size to request scroll gutter calculation (gh-3589)
-        val
+        val,
       ) +
       "px"
     );
@@ -7129,7 +7136,7 @@
             elem["offset" + dimension[0].toUpperCase() + dimension.slice(1)] -
               parseFloat(styles[dimension]) -
               boxModelAdjustment(elem, dimension, "border", false, styles) -
-              0.5
+              0.5,
           );
         }
 
@@ -7160,7 +7167,7 @@
               })) + "px"
         );
       }
-    }
+    },
   );
 
   // These hooks are used by animate to expand properties
@@ -7190,7 +7197,7 @@
       if (prefix !== "margin") {
         jQuery.cssHooks[prefix + suffix].set = setPositiveNumber;
       }
-    }
+    },
   );
 
   jQuery.fn.extend({
@@ -7220,7 +7227,7 @@
         },
         name,
         value,
-        arguments.length > 1
+        arguments.length > 1,
       );
     },
   });
@@ -7527,7 +7534,7 @@
     ],
     function () {
       jQuery.propFix[this.toLowerCase()] = this;
-    }
+    },
   );
 
   // Strip and collapse whitespace according to HTML spec
@@ -7657,7 +7664,7 @@
         return this.each(function (i) {
           jQuery(this).toggleClass(
             value.call(this, i, getClass(this), stateVal),
-            stateVal
+            stateVal,
           );
         });
       }
@@ -7697,7 +7704,7 @@
               "class",
               className || value === false
                 ? ""
-                : dataPriv.get(this, "__className__") || ""
+                : dataPriv.get(this, "__className__") || "",
             );
           }
         }
@@ -8158,7 +8165,7 @@
             prefix + "[" + (typeof v === "object" && v != null ? i : "") + "]",
             v,
             traditional,
-            add
+            add,
           );
         }
       });
@@ -8528,7 +8535,7 @@
           parentOffset.left += jQuery.css(
             offsetParent,
             "borderLeftWidth",
-            true
+            true,
           );
         }
       }
@@ -8595,7 +8602,7 @@
             if (win) {
               win.scrollTo(
                 !top ? val : win.pageXOffset,
-                top ? val : win.pageYOffset
+                top ? val : win.pageYOffset,
               );
             } else {
               elem[method] = val;
@@ -8603,10 +8610,10 @@
           },
           method,
           val,
-          arguments.length
+          arguments.length,
         );
       };
-    }
+    },
   );
 
   // Support: Safari <=7 - 9.1, Chrome <=37 - 49
@@ -8616,19 +8623,19 @@
   // getComputedStyle returns percent when specified for top/left/bottom/right;
   // rather than make the css module depend on the offset module, just check for it here
   jQuery.each(["top", "left"], function (i, prop) {
-    jQuery.cssHooks[prop] = addGetHookIf(support.pixelPosition, function (
-      elem,
-      computed
-    ) {
-      if (computed) {
-        computed = curCSS(elem, prop);
+    jQuery.cssHooks[prop] = addGetHookIf(
+      support.pixelPosition,
+      function (elem, computed) {
+        if (computed) {
+          computed = curCSS(elem, prop);
 
-        // If curCSS returns percentage, fallback to offset
-        return rnumnonpx.test(computed)
-          ? jQuery(elem).position()[prop] + "px"
-          : computed;
-      }
-    });
+          // If curCSS returns percentage, fallback to offset
+          return rnumnonpx.test(computed)
+            ? jQuery(elem).position()[prop] + "px"
+            : computed;
+        }
+      },
+    );
   });
 
   // Create innerHeight, innerWidth, height, width, outerHeight and outerWidth methods
@@ -8667,7 +8674,7 @@
                   doc["scroll" + name],
                   elem.body["offset" + name],
                   doc["offset" + name],
-                  doc["client" + name]
+                  doc["client" + name],
                 );
               }
 
@@ -8679,10 +8686,10 @@
             },
             type,
             chainable ? margin : undefined,
-            chainable
+            chainable,
           );
         };
-      }
+      },
     );
   });
 
@@ -8699,7 +8706,7 @@
           ? this.on(name, null, data, fn)
           : this.trigger(name);
       };
-    }
+    },
   );
 
   jQuery.fn.extend({

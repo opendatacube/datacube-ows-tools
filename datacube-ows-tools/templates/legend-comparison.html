@@ -52,7 +52,7 @@
             .find('Layer[queryable!="1"]')
             .each(function () {
               $("#legend-compare-row").append(
-                "<h4>" + $(this).find("Name").first().text() + "</h4>"
+                "<h4>" + $(this).find("Name").first().text() + "</h4>",
               );
               $(this)
                 .find("Style")
@@ -64,14 +64,14 @@
                       .attr("xlink:href");
                     var comparablelegendImageSrc = legendImageSrc.replace(
                       stableowsurl,
-                      comparableowsurl
+                      comparableowsurl,
                     );
                     $("#legend-compare-row").append(
                       '<div class="row"><img width="50%" src=' +
                         encodeURI(legendImageSrc) +
                         '><img width="50%" src=' +
                         encodeURI(comparablelegendImageSrc) +
-                        "></div>"
+                        "></div>",
                     );
                   }
                 });
